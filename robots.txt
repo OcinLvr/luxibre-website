@@ -1,0 +1,16 @@
+# Règles pour tous les robots
+User-agent: *
+
+# Autoriser l'exploration de toutes les pages
+Allow: /
+
+# Sitemap (à générer)
+Sitemap: https://luxibre.netlify.app/sitemap.xml
+
+# Limiter la vitesse de crawl
+Crawl-delay: 10
+
+# Pages à ne pas indexer
+Disallow: /admin/
+Disallow: /private/
+Disallow: /tmp/
