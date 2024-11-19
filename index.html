@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXIBRE - Sélection Exclusive de Produits de Luxe</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpine.js@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #f3f4f6;
+        }
+        .product-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+        }
+        .limited-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e53e3e;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-black text-white py-8 text-center">
+        <div class="container mx-auto px-4">
+            <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
+            <p class="text-xl mt-3 opacity-80">Liberté & Luxe - Une Sélection Exclusive</p>
+        </div>
+    </header>
+
+    <nav class="bg-gray-100 py-4 shadow-md">
+        <div class="container mx-auto px-4 flex justify-center space-x-6">
+            <a href="#" class="text-black hover:text-gray-700 font-semibold">Accueil</a>
+            <a href="#" class="text-black hover:text-gray-700 font-semibold">Produits</a>
+            <a href="#" class="text-black hover:text-gray-700 font-semibold">À Propos</a>
+            <a href="#" class="text-black hover:text-gray-700 font-semibold">Contact</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-12">
+        <section x-data="productData()" class="grid md:grid-cols-3 gap-8">
+            <template x-for="product in products" :key="product.id">
+                <div class="product-card bg-white rounded-lg overflow-hidden relative group">
+                    <div class="limited-badge">Stock Limité</div>
+                    <img :src="product.image" :alt="product.name" class="w-full h-96 object-cover group-hover:opacity-90 transition">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold mb-2" x-text="product.name"></h3>
+                        <p class="text-gray-600 mb-4 h-16 overflow-hidden" x-text="product.description"></p>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-3xl font-bold text-red-600" x-text="`${product.price}€`"></span>
+                                <span class="line-through ml-2 text-gray-400" x-text="`${product.originalPrice}€`"></span>
+                                <span class="ml-2 text-green-600 font-semibold" x-text="`-${calculateDiscount(product.price, product.originalPrice)}%`"></span>
+                            </div>
+                            <button @click="addToCart(product)" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
+                                Acheter
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </section>
+
+        <section class="mt-16 text-center">
+            <h2 class="text-3xl font-bold mb-8">Pourquoi Choisir Luxibre ?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2">Qualité Garantie</h3>
+                    <p class="text-gray-600">Chaque produit est soigneusement sélectionné pour sa qualité exceptionnelle.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2">Prix Compétitifs</h3>
+                    <p class="text-gray-600">Des produits de luxe à des prix accessibles, sans compromis sur la qualité.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2">Livraison Rapide</h3>
+                    <p class="text-gray-600">Expédition sous 48h et suivi de colis en temps réel.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black text-white py-12">
+        <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-xl font-semibold mb-4">LUXIBRE</h4>
+                <p class="text-gray-300">Découvrez l'élégance à portée de main. Des produits de luxe sélectionnés avec passion.</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-semibold mb-4">Liens Rapides</h4>
+                <ul>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Accueil</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Produits</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">À Propos</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-semibold mb-4">Contactez-nous</h4>
+                <p class="text-gray-300">Email: contact@luxibre.com</p>
+                <p class="text-gray-300">Téléphone: +33 1 23 45 67 89</p>
+                <div class="mt-4 flex space-x-4">
+                    <a href="#" class="text-gray-300 hover:text-white">Instagram</a>
+                    <a href="#" class="text-gray-300 hover:text-white">Facebook</a>
+                    <a href="#" class="text-gray-300 hover:text-white">Twitter</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8 border-t border-gray-800 pt-4">
+            <p>&copy; 2024 LUXIBRE. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        function productData() {
+            return {
+                products: [
+                    {
+                        id: 1,
+                        name: 'Montre Élégante Or Rose',
+                        price: 129.99,
+                        originalPrice: 249.99,
+                        description: 'Un chef-d\'œuvre horloger, bracelet en acier inoxydable, cadran en or rose, mouvement suisse de précision.',
+                        image: 'https://via.placeholder.com/300x400?text=Montre+Luxe'
+                    },
+                    {
+                        id: 2,
+                        name: 'Parfum Sensuel Nocturne',
+                        price: 89.99,
+                        originalPrice: 159.99,
+                        description: 'Un parfum envoûtant qui sublime votre personnalité, notes boisées et florales, sillage longue durée.',
+                        image: 'https://via.placeholder.com/300x400?text=Parfum+Luxe'
+                    },
+                    {
+                        id: 3,
+                        name: 'Lunettes de Soleil Aviateur',
+                        price: 99.50,
+                        originalPrice: 199.50,
+                        description: 'Design vintage, verres polarisés haut de gamme, monture en métal premium, protection UV maximale.',
+                        image: 'https://via.placeholder.com/300x400?text=Lunettes+Luxe'
+                    }
+                ],
+                addToCart(product) {
+                    alert(`${product.name} ajouté au panier !`);
+                },
+                calculateDiscount(price, originalPrice) {
+                    return Math.round(((originalPrice - price) / originalPrice) * 100);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
