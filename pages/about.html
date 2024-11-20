@@ -116,5 +116,28 @@
             <p>&copy; 2024 LUXIBRE. Tous droits réservés.</p>
         </div>
     </footer>
+        <script type="module">
+        import products from './assets/js/products.js';
+        import cart from './assets/js/cart.js';
+
+        function productData() {
+            return {
+                products: products,
+                cart: cart,
+                
+                calculateDiscount(price, originalPrice) {
+                    return Math.round(((originalPrice - price) / originalPrice) * 100);
+                },
+                
+                addToCart(product) {
+                    this.cart.addToCart(product);
+                }
+            }
+        }
+
+        window.productData = productData;
+        window.cart = cart;
+        window.products = products;
+    </script>
 </body>
 </html>
