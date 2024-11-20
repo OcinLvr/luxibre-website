@@ -3,46 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="LUXIBRE - Sélection Exclusive de Produits de Luxe. Découvrez une collection unique de produits haut de gamme.">
     <title>Produits - LUXIBRE</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body class="bg-gray-50" x-data="productPage()">
-    <header class="bg-black text-white py-8 text-center">
-        <div class="container mx-auto px-4">
-            <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
-            <p class="text-xl mt-3 opacity-80">Liberté & Luxe - Une Sélection Exclusive</p>
-        </div>
-    </header>
-
+<body x-data="productPage()" class="bg-gray-50">
+    <!-- Navigation similaire à index.html -->
     <nav class="bg-gray-100 py-4 shadow-md">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex space-x-6">
-                <a href="../index.html" class="text-black hover:text-gray-700 font-semibold">Accueil</a>
-                <a href="products.html" class="text-black hover:text-gray-700 font-semibold">Produits</a>
-                <a href="about.html" class="text-black hover:text-gray-700 font-semibold">À Propos</a>
-                <a href="contact.html" class="text-black hover:text-gray-700 font-semibold">Contact</a>
+                <a href="index.html" class="text-black hover:text-gray-700 font-semibold">Accueil</a>
+                <a href="pages/products.html" class="text-black hover:text-gray-700 font-semibold">Produits</a>
+                <a href="pages/about.html" class="text-black hover:text-gray-700 font-semibold">À Propos</a>
+                <a href="pages/contact.html" class="text-black hover:text-gray-700 font-semibold">Contact</a>
+            </div>
+            <div class="relative">
+                <button @click="cartOpen = !cartOpen" class="text-black hover:text-gray-700">
+                    🛒 Panier (<span x-text="cart.items.length">0</span>)
+                </button>
+                
+                <div x-show="cartOpen" class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg p-4">
+                    <h3 class="text-xl font-semibold mb-4">Votre Panier</h3>
+                    <template x-if="cart.items.length === 0">
+                        <p class="text-gray-500">Votre panier est vide</p>
+                    </template>
+                    <template x-for="item in cart.items" :key="item.id">
+                        <div class="flex justify-between items-center mb-2">
+                            <span x-text="item.name"></span>
+                            <span x-text="${item.price}€"></span>
+                        </div>
+                    </template>
+                </div>
             </div>
         </div>
     </nav>
 
     <main class="container mx-auto px-4 py-12">
-        <h2 class="text-3xl font-semibold mb-8 text-center">Nos Produits</h2>
+        <h1 class="text-4xl font-bold mb-8 text-center">Nos Produits</h1>
+        
+        <div class="flex mb-8 justify-center space-x-4">
+            <select x-model="selectedCategory" class="border rounded p-2">
+                <option value="">Toutes Catégories</option>
+                <option value="Accessoires">Accessoires</option>
+                <option value="Vêtements">Vêtements</option>
+                <option value="Bijoux">Bijoux</option>
+            </select>
+            
+            <select x-model="sortBy" class="border rounded p-2">
+                <option value="price_asc">Prix croissant</option>
+                <option value="price_desc">Prix décroissant</option>
+                <option value="name">Nom</option>
+            </select>
+        </div>
+
         <section class="grid md:grid-cols-3 gap-8">
-            <template x-for="product in products" :key="product.id">
+            <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
-                    <div class="limited-badge">Stock Limité</div>
                     <img :src="product.image" :alt="product.name" class="w-full h-96 object-cover group-hover:opacity-90 transition">
                     <div class="p-6">
                         <h3 class="text-2xl font-semibold mb-2" x-text="product.name"></h3>
-                        <p class="text-gray-600 mb-4 h-16 overflow-hidden" x-text="product.description"></p>
+                        <p class="text-gray-600 mb-4" x-text="product.description"></p>
                         <div class="flex justify-between items-center">
                             <div>
-                                <span class="text-3xl font-bold text-red-600" x-text="`${product.price}€`"></span>
-                                <span class="line-through ml-2 text-gray-400" x-text="`${product.originalPrice}€`"></span>
-                                <span class="ml-2 text-green-600 font-semibold" x-text="`-${calculateDiscount(product.price, product.originalPrice)}%`"></span>
+                                <span class="text-3xl font-bold text-red-600" x-text="${product.price}€"></span>
                             </div>
                             <button @click="addToCart(product)" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
                                 Ajouter au Panier
@@ -54,47 +79,38 @@
         </section>
     </main>
 
-    <footer class="bg-black text-white py-12">
-        <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
-            <div>
-                <h4 class="text-xl font-semibold mb-4">LUXIBRE</h4>
-                <p class="text-gray-300">Découvrez l'élégance à portée de main. Des produits de luxe sélectionnés avec passion.</p>
-            </div>
-            <div>
-                <h4 class="text-xl font-semibold mb-4">Liens Rapides</h4>
-                <ul>
-                    <li><a href="../index.html" class="text-gray-300 hover:text-white">Accueil</a></li>
-                    <li><a href="products.html" class="text-gray-300 hover:text-white">Produits</a></li>
-                    <li><a href="about.html" class="text-gray-300 hover:text-white">À Propos</a></li>
-                    <li><a href="contact.html" class="text-gray-300 hover:text-white">Contact</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xl font-semibold mb-4">Contactez-nous</h4>
-                <p class="text-gray-300">Email: contact@luxibre.com</p>
-                <p class="text-gray-300">Téléphone: +33 1 23 45 67 89</p>
-                <div class="mt-4 flex space-x-4">
-                    <a href="#" class="text-gray-300 hover:text-white">Instagram</a>
-                    <a href="#" class="text-gray-300 hover:text-white">Facebook</a>
-                    <a href="#" class="text-gray-300 hover:text-white">Twitter</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <script type="module">
-        import products from '../assets/js/products.js';
+        import ProductManager from '../assets/js/products.js';
         import cart from '../assets/js/cart.js';
 
         function productPage() {
             return {
                 products: products,
                 cart: cart,
-                calculateDiscount(price, originalPrice) {
-                    return Math.round(((originalPrice - price) / originalPrice) * 100);
+                selectedCategory: '',
+                sortBy: 'price_asc',
+
+                get filteredProducts() {
+                    let result = this.products;
+                    
+                    if (this.selectedCategory) {
+                        result = result.filter(p => p.category === this.selectedCategory);
+                    }
+
+                    switch(this.sortBy) {
+                        case 'price_asc':
+                            return result.sort((a, b) => a.price - b.price);
+                        case 'price_desc':
+                            return result.sort((a, b) => b.price - a.price);
+                        case 'name':
+                            return result.sort((a, b) => a.name.localeCompare(b.name));
+                        default:
+                            return result;
+                    }
                 },
+
                 addToCart(product) {
-                    this.cart.addItem(product);
+                    this.cart.addToCart(product);
                 }
             }
         }
@@ -102,4 +118,4 @@
         window.productPage = productPage;
     </script>
 </body>
-</html>
+</html>   
