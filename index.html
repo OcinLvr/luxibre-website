@@ -133,7 +133,10 @@
     <script type="module">
         import products from './assets/js/products.js';
         import cart from './assets/js/cart.js';
-
+        
+        // Appel de l'initialisation du panier
+        cart.init();
+        
         function productData() {
             return {
                 products: products,
