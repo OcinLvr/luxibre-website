@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - LUXIBRE</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body x-data="contactForm()" class="bg-gray-50">
+    <!-- Navigation identique aux autres pages -->
+    <nav class="bg-gray-100 py-4 shadow-md">
+        <!-- Copier la navigation de index.html -->
+    </nav>
 
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+            <h1 class="text-3xl font-bold mb-6 text-center">Contactez-nous</h1>
+            
+            <form @submit.prevent="submitForm">
+                <div class="mb-4">
+                    <label for="name" class="block mb-2">Nom Complet</label>
+                    <input type="text" x-model="formData.name" required class="w-full border p-2 rounded">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="email" class="block mb-2">Email</label>
+                    <input type="email" x-model="formData.email" required class="w-full border p-2 rounded">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="message" class="block mb-2">Message</label>
+                    <textarea x-model="formData.message" required rows="4" class="w-full border p-2 rounded"></textarea>
+                </div>
+                
+                <button type="submit" class="w-full bg-black text-white py-2 rounded hover:bg-gray-800">
+                    Envoyer le Message
+                </button>
+            </form>
+
+            <div x-show="formSubmitted" class="mt-4 text-center text-green-600">
+                Merci pour votre message ! Nous vous répondrons rapidement.
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function contactForm() {
+            return {
+                formData: {
+                    name: '',
+                    email: '',
+                    message: ''
+                },
+                formSubmitted: false,
+
+                submitForm() {
+                    // Simulation d'envoi de formulaire
+                    console.log('Formulaire soumis:', this.formData);
+                    
+                    // Réinit
