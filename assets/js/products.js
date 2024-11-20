@@ -1,5 +1,5 @@
 // assets/js/products.js
-const ProductManager = {
+const products = {
     products: [
         {
             id: 1,
@@ -51,7 +51,7 @@ const ProductManager = {
                             <span class="line-through ml-2 text-gray-400">${product.originalPrice}€</span>
                             <span class="ml-2 text-green-600 font-semibold">-${this.calculateDiscount(product.price, product.originalPrice)}%</span>
                         </div>
-                        <button onclick="ProductManager.addToCart(${product.id})" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
+                        <button onclick="products.addToCart(${product.id})" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
                             Acheter
                         </button>
                     </div>
@@ -73,7 +73,7 @@ const ProductManager = {
 
 // Render products when page loads
 window.addEventListener('DOMContentLoaded', () => {
-    ProductManager.renderProducts();
+    products.renderProducts();
 });
 
-export default ProductManager;
+export default products;
