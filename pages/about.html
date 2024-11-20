@@ -30,7 +30,7 @@
                     <template x-for="item in cart.items" :key="item.id">
                         <div class="flex justify-between items-center mb-2">
                             <span x-text="item.name"></span>
-                            <span x-text="`${item.price}€`"></span>
+                            <span x-text="${item.price}€"></span>
                         </div>
                     </template>
                 </div>
