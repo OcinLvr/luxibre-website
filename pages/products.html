@@ -7,10 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body x-data="productPage()" class="bg-gray-50">
-    <!-- Navigation similaire à index.html -->
     <nav class="bg-gray-100 py-4 shadow-md">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex space-x-6">
@@ -61,13 +59,16 @@
         <section class="grid md:grid-cols-3 gap-8">
             <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
+                    <div class="limited-badge absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded">Stock Limité</div>
                     <img :src="product.image" :alt="product.name" class="w-full h-96 object-cover group-hover:opacity-90 transition">
                     <div class="p-6">
                         <h3 class="text-2xl font-semibold mb-2" x-text="product.name"></h3>
-                        <p class="text-gray-600 mb-4" x-text="product.description"></p>
+                        <p class="text-gray-600 mb-4 h-16 overflow-hidden" x-text="product.description"></p>
                         <div class="flex justify-between items-center">
                             <div>
                                 <span class="text-3xl font-bold text-red-600" x-text="`${product.price}€`"></span>
+                                <span class="line-through ml-2 text-gray-400" x-text="`${product.originalPrice}€`"></span>
+                                <span class="ml-2 text-green-600 font-semibold" x-text="`-${calculateDiscount(product.price, product.originalPrice)}%`"></span>
                             </div>
                             <button @click="addToCart(product)" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
                                 Ajouter au Panier
@@ -80,15 +81,27 @@
     </main>
 
     <script type="module">
+        // Importation directe des modules
         import products from '../assets/js/products.js';
         import cart from '../assets/js/cart.js';
 
-        function productPage() {
+        // Fonction pour calculer la réduction
+        function calculateDiscount(price, originalPrice) {
+            return Math.round(((originalPrice - price) / originalPrice) * 100);
+        }
+
+        // Fonction de la page produits
+        window.productPage = function() {
             return {
                 products: products,
                 cart: cart,
+                cartOpen: false,
                 selectedCategory: '',
                 sortBy: 'price_asc',
+
+                calculateDiscount(price, originalPrice) {
+                    return Math.round(((originalPrice - price) / originalPrice) * 100);
+                },
 
                 get filteredProducts() {
                     let result = this.products;
@@ -114,8 +127,6 @@
                 }
             }
         }
-
-        window.productPage = productPage;
     </script>
 </body>
 </html>
