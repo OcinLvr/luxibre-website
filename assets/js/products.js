@@ -1,49 +1,56 @@
-const products = [
-  {
-    id: 1,
-    name: "Montre Élégance",
-    description: "Montre luxueuse en or rose avec mouvement automatique suisse",
-    price: 1299,
-    originalPrice: 1599,
-    category: "Accessoires",
-    image: "https://via.placeholder.com/400x400?text=Montre+Élégance"
-  },
-  {
-    id: 2,
-    name: "Sac Manhattan",
-    description: "Sac en cuir italien premium avec finitions dorées",
-    price: 899,
-    originalPrice: 1099,
-    category: "Accessoires",
-    image: "https://via.placeholder.com/400x400?text=Sac+Manhattan"
-  },
-  {
-    id: 3,
-    name: "Collier Diamant",
-    description: "Collier en or blanc 18 carats avec diamant solitaire",
-    price: 2499,
-    originalPrice: 2999,
-    category: "Bijoux",
-    image: "https://via.placeholder.com/400x400?text=Collier+Diamant"
-  },
-  {
-    id: 4,
-    name: "Costume Italien",
-    description: "Costume sur mesure en laine mérinos",
-    price: 1599,
-    originalPrice: 1999,
-    category: "Vêtements",
-    image: "https://via.placeholder.com/400x400?text=Costume+Italien"
-  },
-  {
-    id: 5,
-    name: "Bracelet Précieux",
-    description: "Bracelet en or avec pierres précieuses",
-    price: 799,
-    originalPrice: 999,
-    category: "Bijoux",
-    image: "https://via.placeholder.com/400x400?text=Bracelet+Précieux"
-  }
+export default [
+    {
+        id: 1,
+        name: "Montre Élégante Classique",
+        description: "Montre luxueuse en acier inoxydable, cadran noir et bracelet fin",
+        price: 459.99,
+        originalPrice: 599.99,
+        image: "../assets/images/products/montre.jpg",
+        category: "Accessoires"
+    },
+    {
+        id: 2,
+        name: "Sac à Main en Cuir",
+        description: "Sac de créateur en cuir véritable, finition brillante et détails en métal",
+        price: 689.50,
+        originalPrice: 850.00,
+        image: "../assets/images/products/sac.jpg",
+        category: "Accessoires"
+    },
+    {
+        id: 3,
+        name: "Parfum Signature",
+        description: "Fragrance sophistiquée aux notes de musc, jasmin et cèdre",
+        price: 129.99,
+        originalPrice: 189.99,
+        image: "../assets/images/products/parfum.jpg",
+        category: "Accessoires"
+    },
+    {
+        id: 4,
+        name: "Blazer en Laine",
+        description: "Blazer coupe ajustée en laine fine, couleur noir élégant",
+        price: 349.99,
+        originalPrice: 499.99,
+        image: "../assets/images/products/blazer.jpg",
+        category: "Vêtements"
+    },
+    {
+        id: 5,
+        name: "Collier en Diamant",
+        description: "Collier pendentif en or blanc 18k avec diamant central",
+        price: 1299.99,
+        originalPrice: 1599.99,
+        image: "../assets/images/products/collier.jpg",
+        category: "Bijoux"
+    },
+    {
+        id: 6,
+        name: "Lunettes de Soleil Design",
+        description: "Lunettes de soleil à monture fine, verres polarisés premium",
+        price: 249.50,
+        originalPrice: 379.99,
+        image: "../assets/images/products/lunettes.jpg",
+        category: "Accessoires"
+    }
 ];
-
-export default products;
