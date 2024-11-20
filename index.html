@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <link rel="stylesheet" href="assets/css/style.css">
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
@@ -172,6 +173,17 @@
                 }
             }
         }
+    </script>
+    <script type="module">
+    import products from './assets/js/products.js';
+    import cart from './assets/js/cart.js';
+
+    // Initialize cart
+    cart.init();
+
+    // Make cart and products available globally
+    window.cart = cart;
+    window.products = products;
     </script>
 </body>
 </html>
