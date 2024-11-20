@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="bg-gray-50" x-data="{ cartOpen: false, products: [], cart: { items: [], addToCart(product) { this.items.push(product); } } }">
+<body class="bg-gray-50" x-data="{ cartOpen: false }">
     <header class="bg-black text-white py-8 text-center">
         <div class="container mx-auto px-4">
             <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
@@ -18,6 +18,7 @@
         </div>
     </header>
 
+    <!-- Navigation -->
     <nav class="bg-gray-100 py-4 shadow-md">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex space-x-6">
@@ -31,6 +32,7 @@
                     🛒 Panier (<span x-text="cart.items.length">0</span>)
                 </button>
                 
+                <!-- Panier modal -->
                 <div x-show="cartOpen" class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg p-4">
                     <h3 class="text-xl font-semibold mb-4">Votre Panier</h3>
                     <template x-if="cart.items.length === 0">
@@ -39,9 +41,16 @@
                     <template x-for="item in cart.items" :key="item.id">
                         <div class="flex justify-between items-center mb-2">
                             <span x-text="item.name"></span>
-                            <span x-text="${item.price}€"></span>
+                            <span x-text="`${item.price}€`"></span>
+                            <button @click="cart.removeFromCart(item.id)" class="text-red-500">Supprimer</button>
                         </div>
                     </template>
+                    <div x-show="cart.items.length > 0" class="mt-4">
+                        <p class="font-bold">Total: <span x-text="`${cart.getTotal()}€`"></span></p>
+                        <button @click="cart.checkout()" class="w-full bg-black text-white py-2 rounded mt-2">
+                            Procéder au paiement
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,26 +139,15 @@
         </div>
     </footer>
 
-    <script type="module">
-        import products from './assets/js/products.js';
-        import cart from './assets/js/cart.js';
+    <!-- Ajout du script -->
+    <script type="module" src="assets/js/cart.js"></script>
+    <script type="module" src="assets/js/products.js"></script>
+    <script type="module" src="assets/js/main.js"></script>
 
-        function productData() {
-            return {
-                products: products,
-                cart: cart,
-                
-                calculateDiscount(price, originalPrice) {
-                    return Math.round(((originalPrice - price) / originalPrice) * 100);
-                },
-                
-                addToCart(product) {
-                    this.cart.addToCart(product);
-                }
-            }
-        }
+        // Initialize cart
+        cart.init();
 
-        window.productData = productData;
+        // Make cart and products available globally
         window.cart = cart;
         window.products = products;
     </script>
