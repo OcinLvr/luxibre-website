@@ -6,7 +6,7 @@ const products = [
     price: 1299,
     originalPrice: 1599,
     category: "Accessoires",
-    image: "/api/placeholder/400/400"
+    image: "https://via.placeholder.com/400x400?text=Montre+Élégance"
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ const products = [
     price: 899,
     originalPrice: 1099,
     category: "Accessoires",
-    image: "/api/placeholder/400/400"
+    image: "https://via.placeholder.com/400x400?text=Sac+Manhattan"
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const products = [
     price: 2499,
     originalPrice: 2999,
     category: "Bijoux",
-    image: "/api/placeholder/400/400"
+    image: "https://via.placeholder.com/400x400?text=Collier+Diamant"
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ const products = [
     price: 1599,
     originalPrice: 1999,
     category: "Vêtements",
-    image: "/api/placeholder/400/400"
+    image: "https://via.placeholder.com/400x400?text=Costume+Italien"
   },
   {
     id: 5,
@@ -42,7 +42,7 @@ const products = [
     price: 799,
     originalPrice: 999,
     category: "Bijoux",
-    image: "/api/placeholder/400/400"
+    image: "https://via.placeholder.com/400x400?text=Bracelet+Précieux"
   }
 ];
 
