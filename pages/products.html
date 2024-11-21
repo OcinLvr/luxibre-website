@@ -86,27 +86,31 @@
                 selectedCategory: '',
                 sortBy: 'price_asc',
 
-                // Calcul des produits filtrés selon catégorie et tri
+                // Méthode pour calculer les produits filtrés et triés
                 get filteredProducts() {
                     let result = [...this.products];
 
+                    // Filtrage par catégorie
                     if (this.selectedCategory) {
                         result = result.filter(p => p.category === this.selectedCategory);
                     }
 
+                    // Tri des produits
                     switch (this.sortBy) {
                         case 'price_asc':
-                            return result.sort((a, b) => a.price - b.price);
+                            result = result.sort((a, b) => a.price - b.price);
+                            break;
                         case 'price_desc':
-                            return result.sort((a, b) => b.price - a.price);
+                            result = result.sort((a, b) => b.price - a.price);
+                            break;
                         case 'name':
-                            return result.sort((a, b) => a.name.localeCompare(b.name));
-                        default:
-                            return result;
+                            result = result.sort((a, b) => a.name.localeCompare(b.name));
+                            break;
                     }
+                    return result;
                 },
 
-                // Fonction pour ajouter au panier
+                // Fonction pour ajouter un produit au panier
                 addToCart(product) {
                     this.cart.addToCart(product);
                 },
