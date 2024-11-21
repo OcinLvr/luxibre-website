@@ -1,6 +1,7 @@
+// cart.js
 export default {
     items: [],
-    
+
     init() {
         // Charger le panier depuis le localStorage
         const savedCart = localStorage.getItem('luxibre_cart');
@@ -9,19 +10,16 @@ export default {
 
     addToCart(product) {
         const existingItem = this.items.find(item => item.id === product.id);
-        
         if (existingItem) {
             existingItem.quantity += 1;
         } else {
             this.items.push({ ...product, quantity: 1 });
         }
-        
         this.saveCart();
     },
 
     removeFromCart(productId) {
         const index = this.items.findIndex(item => item.id === productId);
-        
         if (index !== -1) {
             this.items.splice(index, 1);
             this.saveCart();
@@ -41,11 +39,7 @@ export default {
             alert('Votre panier est vide');
             return;
         }
-
-        // Simulation de paiement (à remplacer par une intégration réelle)
         alert('Merci pour votre commande !\nTotal : ' + this.getTotal() + '€');
-        
-        // Vider le panier après commande
         this.items = [];
         this.saveCart();
     }
