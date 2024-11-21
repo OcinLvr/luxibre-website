@@ -64,50 +64,50 @@
 
     <script type="module" src="../assets/js/main.js"></script>
     <script type="module">
-         import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
-    
+    import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
+    import products from '../assets/js/products.js';
+    import cart from '../assets/js/cart.js';
+    import { calculateDiscount } from '../assets/js/products.js';
+
     document.getElementById('site-header').innerHTML = createHeader();
     document.getElementById('site-navigation').innerHTML = createNavigation();
     document.getElementById('site-footer').innerHTML = createFooter();
-        import products from '../assets/js/products.js';
-        import cart from '../assets/js/cart.js';
-        import { calculateDiscount } from '../assets/js/products.js';
 
-        function productPage() {
-            return {
-                products: products,
-                cart: cart,
-                selectedCategory: '',
-                sortBy: 'price_asc',
+    function productPage() {
+        return {
+            products: products,
+            cart: cart,
+            selectedCategory: '',
+            sortBy: 'price_asc',
 
-                get filteredProducts() {
-                    let result = [...this.products];
-                    
-                    if (this.selectedCategory) {
-                        result = result.filter(p => p.category === this.selectedCategory);
-                    }
+            get filteredProducts() {
+                let result = [...this.products];
 
-                    switch(this.sortBy) {
-                        case 'price_asc':
-                            return result.sort((a, b) => a.price - b.price);
-                        case 'price_desc':
-                            return result.sort((a, b) => b.price - a.price);
-                        case 'name':
-                            return result.sort((a, b) => a.name.localeCompare(b.name));
-                        default:
-                            return result;
-                    }
-                },
+                if (this.selectedCategory) {
+                    result = result.filter(p => p.category === this.selectedCategory);
+                }
 
-                addToCart(product) {
-                    this.cart.addToCart(product);
-                },
+                switch (this.sortBy) {
+                    case 'price_asc':
+                        return result.sort((a, b) => a.price - b.price);
+                    case 'price_desc':
+                        return result.sort((a, b) => b.price - a.price);
+                    case 'name':
+                        return result.sort((a, b) => a.name.localeCompare(b.name));
+                    default:
+                        return result;
+                }
+            },
 
-                calculateDiscount
-            }
-        }
+            addToCart(product) {
+                this.cart.addToCart(product);
+            },
 
-        window.productPage = productPage;
-    </script>
+            calculateDiscount
+        };
+    }
+
+    window.productPage = productPage;
+</script>
 </body>
 </html>
