@@ -60,6 +60,11 @@
 
     <script type="module" src="../assets/js/main.js"></script>
     <script type="module">
+         import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
+    
+    document.getElementById('site-header').innerHTML = createHeader();
+    document.getElementById('site-navigation').innerHTML = createNavigation();
+    document.getElementById('site-footer').innerHTML = createFooter();
         import products from '../assets/js/products.js';
         import cart from '../assets/js/cart.js';
         import { calculateDiscount } from '../assets/js/products.js';
