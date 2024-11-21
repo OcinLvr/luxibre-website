@@ -16,7 +16,6 @@
             <p class="text-xl mt-3 opacity-80">Liberté & Luxe - Une Sélection Exclusive</p>
         </div>
     </header>
-
     <nav class="bg-gray-100 py-4 shadow-md">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex space-x-6">
@@ -32,36 +31,31 @@
             </div>
         </div>
     </nav>
-
     <main class="container mx-auto px-4 py-12">
         <h1 class="text-4xl font-bold mb-8 text-center">Nos Produits</h1>
-
         <div class="flex mb-8 justify-center space-x-4">
-            <!-- Ajouter un placeholder pour chaque menu déroulant -->
-            <select x-model="selectedCategory" class="border rounded p-2" aria-label="Filtrer par catégorie">
+            <select x-model="selectedCategory" class="border rounded p-2">
                 <option value="">Toutes Catégories</option>
                 <option value="Accessoires">Accessoires</option>
                 <option value="Vêtements">Vêtements</option>
                 <option value="Bijoux">Bijoux</option>
             </select>
-
-            <select x-model="sortBy" class="border rounded p-2" aria-label="Trier par">
+            <select x-model="sortBy" class="border rounded p-2">
                 <option value="price_asc">Prix croissant</option>
                 <option value="price_desc">Prix décroissant</option>
                 <option value="name">Nom</option>
             </select>
         </div>
-
         <section class="grid md:grid-cols-3 gap-8">
             <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
-                    <img :src="product.image" :alt="`Image de ${product.name}`" class="w-full h-96 object-cover group-hover:opacity-90 transition">
+                    <img :src="product.image" :alt="product.name" class="w-full h-96 object-cover group-hover:opacity-90 transition">
                     <div class="p-6">
                         <h3 class="text-2xl font-semibold mb-2" x-text="product.name"></h3>
                         <p class="text-gray-600 mb-4" x-text="product.description"></p>
                         <div class="flex justify-between items-center">
                             <div>
-                                <span class="text-3xl font-bold text-red-600" x-text="`${product.price}€`"></span>
+                                <span class="text-3xl font-bold text-red-600" x-text="product.price + '€'"></span>
                             </div>
                             <button @click="addToCart(product)" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
                                 Ajouter au Panier
@@ -72,8 +66,8 @@
             </template>
         </section>
     </main>
-
     <script type="module">
+        // Importation des modules produits et panier
         import products from '../assets/js/products.js';
         import cart from '../assets/js/cart.js';
 
@@ -85,6 +79,7 @@
                 sortBy: 'price_asc',
                 cartOpen: false,
 
+                // Filtrage et tri des produits
                 get filteredProducts() {
                     let result = this.products;
 
@@ -104,12 +99,14 @@
                     }
                 },
 
+                // Ajout d'un produit au panier
                 addToCart(product) {
                     this.cart.addToCart(product);
                 }
-            }
+            };
         }
 
+        // Rendre la fonction disponible globalement
         window.productPage = productPage;
     </script>
 </body>
