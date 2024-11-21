@@ -9,13 +9,13 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body x-data="productPage()" class="bg-gray-50">
+<body class="bg-gray-50">
     <header></header>
     <nav></nav>
     <div id="site-header"></div>
     <div id="site-navigation"></div>
 
-    <main class="container mx-auto px-4 py-12">
+    <main class="container mx-auto px-4 py-12" x-data="productPage()">
         <h1 class="text-4xl font-bold mb-8 text-center">Nos Produits</h1>
         
         <div class="flex mb-8 justify-center space-x-4">
@@ -35,7 +35,6 @@
         </div>
 
         <section class="grid md:grid-cols-3 gap-8">
-            <!-- Utilisation de x-for pour afficher les produits -->
             <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
                     <div class="limited-badge">Stock Limité</div>
@@ -73,6 +72,7 @@
         import cart from '../assets/js/cart.js';
         import { calculateDiscount } from '../assets/js/products.js';
 
+        // Définition de la fonction productPage avant de l'utiliser
         function productPage() {
             return {
                 products: products,    // Utilisation des produits importés
