@@ -6,14 +6,23 @@ function calculateDiscount(price, originalPrice) {
     return Math.round(((originalPrice - price) / originalPrice) * 100);
 }
 
-// Logique pour vérifier que les images des produits se chargent correctement
+// Débogage complet des chemins d'images
 console.log("Produits chargés :", products);
 products.forEach(product => {
-    console.log(`Chemin image pour ${product.name}: ${product.image}`);
+    console.log(`Détails du produit : `, product);
     
     const img = new Image();
-    img.onload = () => console.log(`Image chargée : ${product.name}`);
-    img.onerror = () => console.error(`Erreur de chargement : ${product.name}`);
+    img.onload = () => {
+        console.log(`✅ Image chargée avec succès : ${product.name}`);
+        console.log(`Dimensions : ${img.width}x${img.height}`);
+    };
+    img.onerror = (e) => {
+        console.error(`❌ Erreur de chargement de l'image pour ${product.name}`);
+        console.error(`Chemin de l'image : ${product.image}`);
+        console.error(`Erreur détaillée :`, e);
+    };
+    
+    // Utiliser le chemin complet depuis la racine du site
     img.src = product.image;
 });
 
