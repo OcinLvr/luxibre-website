@@ -1,11 +1,12 @@
-export const products = [
+const products = [
     {
         id: 1,
         name: "Montre Élégante",
         description: "Montre de luxe en acier inoxydable avec cadran en or rose",
         price: 1299.99,
         originalPrice: 1599.99,
-        image: "../assets/images/products/montre.jpg",
+        image: "../assets/images/products/montre.jpg", // Pour products.html
+        // Ou image: "assets/images/products/montre.jpg", // Pour index.html
         category: "Accessoires"
     },
     {
@@ -55,8 +56,8 @@ export const products = [
     }
 ];
 
+export default products;
+
 export function calculateDiscount(price, originalPrice) {
     return Math.round(((originalPrice - price) / originalPrice) * 100);
 }
-
-export default products;
