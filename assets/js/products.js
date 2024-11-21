@@ -56,8 +56,6 @@ const products = [
     }
 ];
 
-export default products;
-
 export function calculateDiscount(price, originalPrice) {
     return Math.round(((originalPrice - price) / originalPrice) * 100);
 }
