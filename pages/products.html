@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body class="bg-gray-50">
+
     <header></header>
     <nav></nav>
     <div id="site-header"></div>
@@ -60,29 +61,26 @@
 
     <footer><div id="site-footer"></div></footer>
 
+    <!-- Déplacer le script importé ici, avant la fermeture du body -->
     <script type="module" src="../assets/js/main.js"></script>
     <script type="module">
+        // Définir productPage() avant de l'utiliser dans Alpine.js
         import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
-    
-        document.getElementById('site-header').innerHTML = createHeader();
-        document.getElementById('site-navigation').innerHTML = createNavigation();
-        document.getElementById('site-footer').innerHTML = createFooter();
-
         import products from '../assets/js/products.js';
         import cart from '../assets/js/cart.js';
         import { calculateDiscount } from '../assets/js/products.js';
 
-        // Définition de la fonction productPage avant de l'utiliser
+        // Créez l'élément en utilisant Alpine.js
         function productPage() {
             return {
-                products: products,    // Utilisation des produits importés
+                products: products,    // Produits importés
                 cart: cart,
                 selectedCategory: '',  // Valeur par défaut
-                sortBy: 'price_asc',   // Valeur par défaut pour le tri
+                sortBy: 'price_asc',   // Valeur par défaut
 
                 // Fonction pour filtrer les produits
                 get filteredProducts() {
-                    let result = [...this.products];    // Création d'une copie de la liste des produits
+                    let result = [...this.products];    // Création d'une copie des produits
                     
                     if (this.selectedCategory) {
                         result = result.filter(p => p.category === this.selectedCategory);  // Filtrer par catégorie
@@ -105,11 +103,11 @@
                     this.cart.addToCart(product);
                 },
 
-                calculateDiscount  // Utilisation de la fonction calculateDiscount pour le calcul du pourcentage de réduction
+                calculateDiscount  // Fonction pour le calcul du pourcentage de réduction
             }
         }
 
-        window.productPage = productPage;
+        window.productPage = productPage; // Déclare productPage globalement pour Alpine.js
     </script>
 </body>
 </html>
