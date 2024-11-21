@@ -9,7 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-
 <body x-data="productPage()" class="bg-gray-50">
     <header></header>
     <nav></nav>
@@ -20,7 +19,6 @@
     <main class="container mx-auto px-4 py-12">
         <h1 class="text-4xl font-bold mb-8 text-center">Nos Produits</h1>
 
-        <!-- Sélection de la catégorie -->
         <div class="flex mb-8 justify-center space-x-4">
             <select x-model="selectedCategory" class="border rounded p-2">
                 <option value="">Toutes les catégories</option>
@@ -30,7 +28,6 @@
                 <option value="Parfums">Parfums</option>
             </select>
 
-            <!-- Sélection du tri -->
             <select x-model="sortBy" class="border rounded p-2">
                 <option value="price_asc">Prix croissant</option>
                 <option value="price_desc">Prix décroissant</option>
@@ -38,7 +35,6 @@
             </select>
         </div>
 
-        <!-- Liste des produits filtrés et triés -->
         <section class="grid md:grid-cols-3 gap-8">
             <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
@@ -66,7 +62,6 @@
     <div id="site-footer"></div>
     <footer></footer>
 
-    <!-- Charger main.js à la fin du body -->
     <script type="module">
         import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
         import products from '../assets/js/products.js';
@@ -77,7 +72,6 @@
         document.getElementById('site-navigation').innerHTML = createNavigation();
         document.getElementById('site-footer').innerHTML = createFooter();
 
-        // Fonction principale pour Alpine.js
         function productPage() {
             return {
                 products: products,
@@ -85,16 +79,12 @@
                 selectedCategory: '',
                 sortBy: 'price_asc',
 
-                // Méthode pour calculer les produits filtrés et triés
+                // Méthode pour obtenir les produits filtrés et triés
                 get filteredProducts() {
                     let result = [...this.products];
-
-                    // Filtrage par catégorie
                     if (this.selectedCategory) {
                         result = result.filter(p => p.category === this.selectedCategory);
                     }
-
-                    // Tri des produits
                     switch (this.sortBy) {
                         case 'price_asc':
                             result = result.sort((a, b) => a.price - b.price);
@@ -109,21 +99,17 @@
                     return result;
                 },
 
-                // Fonction pour ajouter un produit au panier
                 addToCart(product) {
                     this.cart.addToCart(product);
                 },
 
-                // Fonction pour calculer la réduction
                 calculateDiscount
             };
         }
 
-        // Assurez-vous que Alpine.js peut accéder à productPage correctement
-        window.productPage = productPage;
+        window.productPage = productPage; // Assurez-vous que la fonction est accessible
     </script>
-
+    
     <script type="module" src="../assets/js/main.js"></script>
 </body>
-
 </html>
