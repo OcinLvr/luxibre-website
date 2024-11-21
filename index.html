@@ -150,6 +150,11 @@
         // Make cart and products available globally
         window.cart = cart;
         window.products = products;
+
+    <script>
+    function calculateDiscount(price, originalPrice) {
+        return Math.round(((originalPrice - price) / originalPrice) * 100);
+    }
     </script>
 </body>
 </html>
