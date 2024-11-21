@@ -38,18 +38,25 @@
         <section class="grid md:grid-cols-3 gap-8">
             <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
-                    <div class="limited-badge" x-show="product.stock === 'limited'">Stock Limité</div>
-                    <img :src="product.image" :alt="product.name" class="w-full h-96 object-cover group-hover:opacity-90 transition">
+                    <div class="limited-badge absolute top-0 left-0 bg-red-600 text-white px-2 py-1 rounded-bl-md" 
+                         x-show="product.stock === 'limited'">
+                        Stock Limité
+                    </div>
+                    <img :src="product.image" :alt="product.name" 
+                         class="w-full h-96 object-cover group-hover:opacity-90 transition">
                     <div class="p-6">
                         <h3 class="text-2xl font-semibold mb-2" x-text="product.name"></h3>
                         <p class="text-gray-600 mb-4 h-16 overflow-hidden" x-text="product.description"></p>
                         <div class="flex justify-between items-center">
                             <div>
                                 <span class="text-3xl font-bold text-red-600" x-text="`${product.price}€`"></span>
-                                <span class="line-through ml-2 text-gray-400" x-text="`${product.originalPrice}€`"></span>
-                                <span class="ml-2 text-green-600 font-semibold" x-text="`-${calculateDiscount(product.price, product.originalPrice)}%`"></span>
+                                <span class="line-through ml-2 text-gray-400" 
+                                      x-text="product.originalPrice ? `${product.originalPrice}€` : ''"></span>
+                                <span class="ml-2 text-green-600 font-semibold" 
+                                      x-text="product.originalPrice ? `-${calculateDiscount(product.price, product.originalPrice)}%` : ''"></span>
                             </div>
-                            <button @click="addToCart(product)" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
+                            <button @click="addToCart(product)" 
+                                    class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
                                 Acheter
                             </button>
                         </div>
@@ -87,13 +94,13 @@
                     }
                     switch (this.sortBy) {
                         case 'price_asc':
-                            result = result.sort((a, b) => a.price - b.price);
+                            result.sort((a, b) => a.price - b.price);
                             break;
                         case 'price_desc':
-                            result = result.sort((a, b) => b.price - a.price);
+                            result.sort((a, b) => b.price - a.price);
                             break;
                         case 'name':
-                            result = result.sort((a, b) => a.name.localeCompare(b.name));
+                            result.sort((a, b) => a.name.localeCompare(b.name));
                             break;
                     }
                     return result;
@@ -103,11 +110,15 @@
                     this.cart.addToCart(product);
                 },
 
-                calculateDiscount
+                calculateDiscount(price, originalPrice) {
+                    return originalPrice && originalPrice > price
+                        ? Math.round(((originalPrice - price) / originalPrice) * 100)
+                        : 0;
+                }
             };
         }
 
-        window.productPage = productPage; // Assurez-vous que la fonction est accessible
+        window.productPage = productPage; // Assurez-vous que la fonction est accessible globalement
     </script>
     
     <script type="module" src="../assets/js/main.js"></script>
