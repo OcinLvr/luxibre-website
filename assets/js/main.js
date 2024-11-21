@@ -1,15 +1,24 @@
 import cart from './cart.js';
 import products from './products.js';
 
-// Rendre ces objets disponibles globalement
-window.cart = cart;
-window.products = products;
+// Fonction pour calculer la remise
+function calculateDiscount(price, originalPrice) {
+    return Math.round(((originalPrice - price) / originalPrice) * 100);
+}
+
+// Configuration Alpine.js
+document.addEventListener('alpine:init', () => {
+    Alpine.store('cart', cart);
+    Alpine.store('products', products);
+
+    Alpine.data('productData', () => ({
+        products: products,
+        calculateDiscount,
+        addToCart(product) {
+            cart.addToCart(product);
+        }
+    }));
+});
 
 // Initialisation du panier
 cart.init();
-
-// Configuration Alpine.js si nécessaire
-if (window.Alpine) {
-    window.Alpine.store('cart', cart.items);
-    window.Alpine.store('products', products);
-}
