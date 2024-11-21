@@ -5,8 +5,7 @@ export default [
         description: "Montre de luxe en acier inoxydable avec cadran en or rose",
         price: 1299.99,
         originalPrice: 1599.99,
-        image: "/assets/images/products/montre.jpg", // Pour products.html
-        // Ou image: "assets/images/products/montre.jpg", // Pour index.html
+        image: "assets/images/products/montre.jpg", // Chemin relatif à la racine du site
         category: "Accessoires"
     },
     {
@@ -15,7 +14,7 @@ export default [
         description: "Sac en cuir italien avec finitions en or, édition limitée",
         price: 2499.50,
         originalPrice: 2899.99,
-        image: "/assets/images/products/sac.jpg",
+        image: "assets/images/products/sac.jpg",
         category: "Accessoires"
     },
     {
@@ -24,7 +23,7 @@ export default [
         description: "Fragrance rare aux notes de jasmin et de bois de santal",
         price: 299.99,
         originalPrice: 349.99,
-        image: "/assets/images/products/parfum.jpg",
+        image: "assets/images/products/parfum.jpg",
         category: "Parfums"
     },
     {
@@ -33,7 +32,7 @@ export default [
         description: "Lunettes de soleil design avec verres polarisés et monture en titane",
         price: 749.99,
         originalPrice: 899.99,
-        image: "/assets/images/products/lunettes.jpg",
+        image: "assets/images/products/lunettes.jpg",
         category: "Accessoires"
     },
     {
@@ -42,7 +41,7 @@ export default [
         description: "Châle artisanal en cachemire pur, tissé à la main",
         price: 899.50,
         originalPrice: 1199.99,
-        image: "/assets/images/products/chale.jpg",
+        image: "assets/images/products/chale.jpg",
         category: "Vêtements"
     },
     {
@@ -51,7 +50,7 @@ export default [
         description: "Bracelet en or blanc 18 carats serti de diamants",
         price: 4999.99,
         originalPrice: 5499.99,
-        image: "/assets/images/products/bracelet.jpg",
+        image: "assets/images/products/bracelet.jpg",
         category: "Bijoux"
     }
 ];
