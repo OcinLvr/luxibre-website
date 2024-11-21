@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,24 +10,28 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+
 <body x-data="productPage()" class="bg-gray-50">
     <header></header>
     <nav></nav>
-<div id="site-header"></div>
-<div id="site-navigation"></div>
+
+    <div id="site-header"></div>
+    <div id="site-navigation"></div>
 
     <main class="container mx-auto px-4 py-12">
         <h1 class="text-4xl font-bold mb-8 text-center">Nos Produits</h1>
-        
+
+        <!-- Sélection de la catégorie -->
         <div class="flex mb-8 justify-center space-x-4">
             <select x-model="selectedCategory" class="border rounded p-2">
-                <option value="">Toutes Catégories</option>
+                <option value="">Toutes les catégories</option>
                 <option value="Accessoires">Accessoires</option>
                 <option value="Vêtements">Vêtements</option>
                 <option value="Bijoux">Bijoux</option>
                 <option value="Parfums">Parfums</option>
             </select>
-            
+
+            <!-- Sélection du tri -->
             <select x-model="sortBy" class="border rounded p-2">
                 <option value="price_asc">Prix croissant</option>
                 <option value="price_desc">Prix décroissant</option>
@@ -34,10 +39,11 @@
             </select>
         </div>
 
+        <!-- Liste des produits filtrés et triés -->
         <section class="grid md:grid-cols-3 gap-8">
             <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
-                    <div class="limited-badge">Stock Limité</div>
+                    <div class="limited-badge" x-show="product.stock === 'limited'">Stock Limité</div>
                     <img :src="product.image" :alt="product.name" class="w-full h-96 object-cover group-hover:opacity-90 transition">
                     <div class="p-6">
                         <h3 class="text-2xl font-semibold mb-2" x-text="product.name"></h3>
@@ -57,55 +63,62 @@
             </template>
         </section>
     </main>
-                            <div id="site-footer"></div>
+
+    <div id="site-footer"></div>
     <footer></footer>
 
+    <!-- Charger main.js à la fin du body -->
     <script type="module" src="../assets/js/main.js"></script>
     <script type="module">
-    import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
-    import products from '../assets/js/products.js';
-    import cart from '../assets/js/cart.js';
-    import { calculateDiscount } from '../assets/js/products.js';
+        import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
+        import products from '../assets/js/products.js';
+        import cart from '../assets/js/cart.js';
+        import { calculateDiscount } from '../assets/js/products.js';
 
-    document.getElementById('site-header').innerHTML = createHeader();
-    document.getElementById('site-navigation').innerHTML = createNavigation();
-    document.getElementById('site-footer').innerHTML = createFooter();
+        document.getElementById('site-header').innerHTML = createHeader();
+        document.getElementById('site-navigation').innerHTML = createNavigation();
+        document.getElementById('site-footer').innerHTML = createFooter();
 
-    function productPage() {
-        return {
-            products: products,
-            cart: cart,
-            selectedCategory: '',
-            sortBy: 'price_asc',
+        // Fonction principale pour Alpine.js
+        function productPage() {
+            return {
+                products: products,
+                cart: cart,
+                selectedCategory: '',
+                sortBy: 'price_asc',
 
-            get filteredProducts() {
-                let result = [...this.products];
+                // Calcul des produits filtrés selon catégorie et tri
+                get filteredProducts() {
+                    let result = [...this.products];
 
-                if (this.selectedCategory) {
-                    result = result.filter(p => p.category === this.selectedCategory);
-                }
+                    if (this.selectedCategory) {
+                        result = result.filter(p => p.category === this.selectedCategory);
+                    }
 
-                switch (this.sortBy) {
-                    case 'price_asc':
-                        return result.sort((a, b) => a.price - b.price);
-                    case 'price_desc':
-                        return result.sort((a, b) => b.price - a.price);
-                    case 'name':
-                        return result.sort((a, b) => a.name.localeCompare(b.name));
-                    default:
-                        return result;
-                }
-            },
+                    switch (this.sortBy) {
+                        case 'price_asc':
+                            return result.sort((a, b) => a.price - b.price);
+                        case 'price_desc':
+                            return result.sort((a, b) => b.price - a.price);
+                        case 'name':
+                            return result.sort((a, b) => a.name.localeCompare(b.name));
+                        default:
+                            return result;
+                    }
+                },
 
-            addToCart(product) {
-                this.cart.addToCart(product);
-            },
+                // Fonction pour ajouter au panier
+                addToCart(product) {
+                    this.cart.addToCart(product);
+                },
 
-            calculateDiscount
-        };
-    }
+                // Fonction pour calculer la réduction
+                calculateDiscount
+            };
+        }
 
-    window.productPage = productPage;
-</script>
+        window.productPage = productPage;
+    </script>
 </body>
+
 </html>
