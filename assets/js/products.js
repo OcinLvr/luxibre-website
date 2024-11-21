@@ -1,4 +1,4 @@
-export default [
+export const products = [
     {
         id: 1,
         name: "Montre Élégante",
@@ -54,3 +54,9 @@ export default [
         category: "Bijoux"
     }
 ];
+
+export function calculateDiscount(price, originalPrice) {
+    return Math.round(((originalPrice - price) / originalPrice) * 100);
+}
+
+export default products;
