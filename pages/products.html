@@ -12,9 +12,9 @@
 <body x-data="productPage()" class="bg-gray-50">
     <header></header>
     <nav></nav>
-<div id="site-header"></div>
-<div id="site-navigation"></div>
-    
+    <div id="site-header"></div>
+    <div id="site-navigation"></div>
+
     <main class="container mx-auto px-4 py-12">
         <h1 class="text-4xl font-bold mb-8 text-center">Nos Produits</h1>
         
@@ -35,6 +35,7 @@
         </div>
 
         <section class="grid md:grid-cols-3 gap-8">
+            <!-- Utilisation de x-for pour afficher les produits -->
             <template x-for="product in filteredProducts" :key="product.id">
                 <div class="product-card bg-white rounded-lg overflow-hidden relative group">
                     <div class="limited-badge">Stock Limité</div>
@@ -62,46 +63,49 @@
 
     <script type="module" src="../assets/js/main.js"></script>
     <script type="module">
-         import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
+        import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
     
-    document.getElementById('site-header').innerHTML = createHeader();
-    document.getElementById('site-navigation').innerHTML = createNavigation();
-    document.getElementById('site-footer').innerHTML = createFooter();
+        document.getElementById('site-header').innerHTML = createHeader();
+        document.getElementById('site-navigation').innerHTML = createNavigation();
+        document.getElementById('site-footer').innerHTML = createFooter();
+
         import products from '../assets/js/products.js';
         import cart from '../assets/js/cart.js';
         import { calculateDiscount } from '../assets/js/products.js';
 
         function productPage() {
             return {
-                products: products,
+                products: products,    // Utilisation des produits importés
                 cart: cart,
                 selectedCategory: '',
                 sortBy: 'price_asc',
 
+                // Fonction pour filtrer les produits
                 get filteredProducts() {
-                    let result = [...this.products];
+                    let result = [...this.products];    // Création d'une copie de la liste des produits
                     
                     if (this.selectedCategory) {
-                        result = result.filter(p => p.category === this.selectedCategory);
+                        result = result.filter(p => p.category === this.selectedCategory);  // Filtrer par catégorie
                     }
 
                     switch(this.sortBy) {
                         case 'price_asc':
-                            return result.sort((a, b) => a.price - b.price);
+                            return result.sort((a, b) => a.price - b.price);  // Tri par prix croissant
                         case 'price_desc':
-                            return result.sort((a, b) => b.price - a.price);
+                            return result.sort((a, b) => b.price - a.price);  // Tri par prix décroissant
                         case 'name':
-                            return result.sort((a, b) => a.name.localeCompare(b.name));
+                            return result.sort((a, b) => a.name.localeCompare(b.name));  // Tri par nom
                         default:
                             return result;
                     }
                 },
 
+                // Fonction pour ajouter un produit au panier
                 addToCart(product) {
                     this.cart.addToCart(product);
                 },
 
-                calculateDiscount
+                calculateDiscount  // Utilisation de la fonction calculateDiscount pour le calcul du pourcentage de réduction
             }
         }
 
