@@ -1,4 +1,4 @@
-export default [
+const products = [
     {
         id: 1,
         name: "Montre Élégante",
