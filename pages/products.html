@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,58 @@
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
-<body x-data="productPage()" class="bg-gray-50">
+<body class="bg-gray-50">
+    <!-- Définir la fonction productPage avant l'initialisation Alpine.js -->
+    <script type="module">
+        import { calculateDiscount } from '../assets/js/products.js'; 
+        import products from '../assets/js/products.js'; 
+        import cart from '../assets/js/cart.js';
+
+        // Définition de la fonction productPage pour Alpine.js
+        function productPage() {
+            return {
+                products: products,
+                cart: cart,
+                selectedCategory: '',
+                sortBy: 'price_asc',
+
+                // Méthode pour calculer les produits filtrés et triés
+                get filteredProducts() {
+                    let result = [...this.products];
+
+                    // Filtrage par catégorie
+                    if (this.selectedCategory) {
+                        result = result.filter(p => p.category === this.selectedCategory);
+                    }
+
+                    // Tri des produits
+                    switch (this.sortBy) {
+                        case 'price_asc':
+                            result = result.sort((a, b) => a.price - b.price);
+                            break;
+                        case 'price_desc':
+                            result = result.sort((a, b) => b.price - a.price);
+                            break;
+                        case 'name':
+                            result = result.sort((a, b) => a.name.localeCompare(b.name));
+                            break;
+                    }
+                    return result;
+                },
+
+                // Fonction pour ajouter un produit au panier
+                addToCart(product) {
+                    this.cart.addToCart(product);
+                },
+
+                // Fonction pour calculer la réduction
+                calculateDiscount
+            };
+        }
+
+        window.productPage = productPage;
+    </script>
+
     <header></header>
     <nav></nav>
 
@@ -68,60 +120,6 @@
 
     <!-- Charger main.js à la fin du body -->
     <script type="module" src="../assets/js/main.js"></script>
-    <script type="module">
-        import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
-        import products from '../assets/js/products.js';
-        import cart from '../assets/js/cart.js';
-        import { calculateDiscount } from '../assets/js/products.js';
-
-        document.getElementById('site-header').innerHTML = createHeader();
-        document.getElementById('site-navigation').innerHTML = createNavigation();
-        document.getElementById('site-footer').innerHTML = createFooter();
-
-        // Fonction principale pour Alpine.js
-        function productPage() {
-            return {
-                products: products,
-                cart: cart,
-                selectedCategory: '',
-                sortBy: 'price_asc',
-
-                // Méthode pour calculer les produits filtrés et triés
-                get filteredProducts() {
-                    let result = [...this.products];
-
-                    // Filtrage par catégorie
-                    if (this.selectedCategory) {
-                        result = result.filter(p => p.category === this.selectedCategory);
-                    }
-
-                    // Tri des produits
-                    switch (this.sortBy) {
-                        case 'price_asc':
-                            result = result.sort((a, b) => a.price - b.price);
-                            break;
-                        case 'price_desc':
-                            result = result.sort((a, b) => b.price - a.price);
-                            break;
-                        case 'name':
-                            result = result.sort((a, b) => a.name.localeCompare(b.name));
-                            break;
-                    }
-                    return result;
-                },
-
-                // Fonction pour ajouter un produit au panier
-                addToCart(product) {
-                    this.cart.addToCart(product);
-                },
-
-                // Fonction pour calculer la réduction
-                calculateDiscount
-            };
-        }
-
-        window.productPage = productPage;
-    </script>
 </body>
 
 </html>
