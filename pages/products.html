@@ -6,8 +6,9 @@
     <title>Produits - LUXIBRE</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-50">
     <header></header>
@@ -17,7 +18,7 @@
 
     <main class="container mx-auto px-4 py-12" x-data="productPage()">
         <h1 class="text-4xl font-bold mb-8 text-center">Nos Produits</h1>
-        
+
         <div class="flex mb-8 justify-center space-x-4">
             <select x-model="selectedCategory" class="border rounded p-2">
                 <option value="">Toutes Catégories</option>
@@ -26,7 +27,7 @@
                 <option value="Bijoux">Bijoux</option>
                 <option value="Parfums">Parfums</option>
             </select>
-            
+
             <select x-model="sortBy" class="border rounded p-2">
                 <option value="price_asc">Prix croissant</option>
                 <option value="price_desc">Prix décroissant</option>
@@ -63,12 +64,23 @@
     <script type="module" src="/assets/js/main.js"></script>
     <script type="module">
         import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
-    
+
         document.getElementById('site-header').innerHTML = createHeader();
         document.getElementById('site-navigation').innerHTML = createNavigation();
         document.getElementById('site-footer').innerHTML = createFooter();
 
         import products from '../assets/js/products.js';
+        import cart from '../assets/js/cart.js';
+        import { calculateDiscount } from '../assets/js/products.js';
+        // Définition de la fonction productPage avant de l'utiliser
+        function productPage() {
+            return {
+                products: products,    // Utilisation des produits importés
+                cart: cart,
+                selectedCategory: '',  // Valeur par défaut
+                sortBy: 'price_asc',   // Valeur par défaut pour le tri
+                // Fonction pour filtrer les produits
+                get filteredProducts() {
         import { products, calculateDiscount } from '/assets/js/products.js';
         import { cart } from '/assets/js/cart.js';
     
@@ -81,7 +93,7 @@
             
             get filteredProducts() {
                     let result = [...this.products];    // Création d'une copie de la liste des produits
-                    
+
                     if (this.selectedCategory) {
                         result = result.filter(p => p.category === this.selectedCategory);  // Filtrer par catégorie
                     }
@@ -96,6 +108,10 @@
                         default:
                             return result;
                     }
+                },
+                // Fonction pour ajouter un produit au panier
+                addToCart(product) {
+                    this.cart.addToCart(product);
                 },
             
             addToCart(product) {
