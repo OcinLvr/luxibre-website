@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link rel="stylesheet" href="../assets/css/style.css">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-gray-50">
     <header></header>
@@ -61,6 +60,7 @@
 
     <footer><div id="site-footer"></div></footer>
 
+    <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="/assets/js/main.js"></script>
     <script type="module">
         import { createHeader, createNavigation, createFooter } from '../assets/js/components.js';
@@ -72,6 +72,7 @@
         import products from '../assets/js/products.js';
         import cart from '../assets/js/cart.js';
         import { calculateDiscount } from '../assets/js/products.js';
+
         // Définition de la fonction productPage avant de l'utiliser
         function productPage() {
             return {
@@ -79,19 +80,9 @@
                 cart: cart,
                 selectedCategory: '',  // Valeur par défaut
                 sortBy: 'price_asc',   // Valeur par défaut pour le tri
+
                 // Fonction pour filtrer les produits
                 get filteredProducts() {
-        import { products, calculateDiscount } from '/assets/js/products.js';
-        import { cart } from '/assets/js/cart.js';
-    
-    window.productPage = function() {
-        return {
-            products,
-            cart,
-            selectedCategory: '',
-            sortBy: 'price_asc',
-            
-            get filteredProducts() {
                     let result = [...this.products];    // Création d'une copie de la liste des produits
 
                     if (this.selectedCategory) {
@@ -109,14 +100,11 @@
                             return result;
                     }
                 },
+
                 // Fonction pour ajouter un produit au panier
                 addToCart(product) {
                     this.cart.addToCart(product);
                 },
-            
-            addToCart(product) {
-                this.cart.addToCart(product);
-            }
 
                 calculateDiscount  // Utilisation de la fonction calculateDiscount pour le calcul du pourcentage de réduction
             }
