@@ -12,6 +12,7 @@
 </head>
 <body class="bg-gray-50" x-data="{ cartOpen: false }">
 <body class="bg-gray-50" x-data="{
+    cartOpen: false,
     cart: {
         items: [],
         addToCart(product) {
@@ -50,21 +51,16 @@
             this.items = savedCart ? JSON.parse(savedCart) : [];
         }
     },
-    products: [
-        {
-            id: 1,
-            name: "Montre Élégante",
-            description: "Montre de luxe en acier inoxydable avec cadran en or rose",
-            price: 1299.99,
-            originalPrice: 1599.99,
-            image: "assets/images/products/montre.jpg",
-            category: "Accessoires"
-        }
-    ],
-    initCart() {
+    products: [],
+    async init() {
+        // Charger les produits
+        const response = await fetch('/assets/js/products.js');
+        const module = await response.json();
+        this.products = module.default;
         this.cart.init();
     }
-}" x-init="initCart()">
+}">
+    x-init="initCart()">
     <header class="bg-black text-white py-8 text-center">
         <div class="container mx-auto px-4">
             <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
