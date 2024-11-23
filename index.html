@@ -16,7 +16,7 @@
     <script type="module" src="assets/js/main.js"></script>
 </head>
 <body class="bg-gray-50" x-data="{ cartOpen: false, products: [], cart: {} }"
-    async function init() {
+    x-init="async function init() {
     // Initialize cart
     const savedCart = localStorage.getItem('luxibre_cart');
     cart = {
