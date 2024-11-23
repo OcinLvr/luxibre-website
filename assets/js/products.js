@@ -1,20 +1,17 @@
-[
+// products.js
+export default [
     {
-        "id": 1,
-        "name": "Montre Élégante",
-        "price": 149,
-        "image": "../assets/images/products/montre.jpg"
-    },
-    {
-        "id": 2,
-        "name": "Bracelet Chic",
-        "price": 59,
-        "image": "../assets/images/products/bracelet.jpg"
-    },
-    {
-        "id": 3,
-        "name": "Collier Luxe",
-        "price": 199,
-        "image": "../assets/images/products/collier.jpg"
+        id: 1,
+        name: "Montre Élégante",
+        description: "Montre de luxe en acier inoxydable avec cadran en or rose",
+        price: 1299.99,
+        originalPrice: 1599.99,
+        image: "luxibre-website/assets/images/products/montre.jpg", // Chemin relatif mis à jour
+        image: "assets/images/products/montre.jpg", // Chemin relatif mis à jour
+        category: "Accessoires"
     }
-]
+];
+
+export function calculateDiscount(price, originalPrice) {
+    return Math.round(((originalPrice - price) / originalPrice) * 100);
+}
