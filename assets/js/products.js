@@ -4,7 +4,7 @@ export default [
         name: "Montre de Luxe",
         description: "Une montre en or massif avec un design intemporel.",
         price: 2499.99,
-        image: "/assets/images/montre-luxe.jpg"
+        image: "/assets/images/products/montre.jpg"
     },
     {
         id: 2,
