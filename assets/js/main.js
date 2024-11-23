@@ -1,81 +1,29 @@
-import cart from './cart.js';
-import products from './products.js';
-
-// Fonction de calcul du pourcentage de réduction
-function calculateDiscount(price, originalPrice) {
-    return Math.round(((originalPrice - price) / originalPrice) * 100);
-}
-
-// Débogage complet des chemins d'images
-console.log("Produits chargés :", products);
-products.forEach(product => {
-    console.log(`Détails du produit : `, product);
-    
-    const img = new Image();
-    img.onload = () => {
-        console.log(`✅ Image chargée avec succès : ${product.name}`);
-        console.log(`Dimensions : ${img.width}x${img.height}`);
-    };
-    img.onerror = (e) => {
-        console.error(`❌ Erreur de chargement de l'image pour ${product.name}`);
-        console.error(`Chemin de l'image : ${product.image}`);
-        console.error(`Erreur détaillée :`, e);
-    };
-    
-    // Utiliser le chemin complet depuis la racine du site
-    img.src = product.image;
-});
-
-// Définir la fonction productPage pour Alpine.js
-function productPage() {
+function productList() {
     return {
-        products: products,          // Liste des produits
-        selectedCategory: '',        // Catégorie sélectionnée
-        sortBy: 'price_asc',         // Tri par défaut
-        cart: cart,                  // Référence au panier
-        calculateDiscount,           // Fonction de réduction
-
-        // Filtrage des produits en fonction de la catégorie et du tri
-        get filteredProducts() {
-            let result = [...this.products];
-            
-            // Filtrage par catégorie
-            if (this.selectedCategory) {
-                result = result.filter(product => product.category === this.selectedCategory);
-            }
-
-            // Tri des produits
-            switch (this.sortBy) {
-                case 'price_asc':
-                    result.sort((a, b) => a.price - b.price);
-                    break;
-                case 'price_desc':
-                    result.sort((a, b) => b.price - a.price);
-                    break;
-                case 'name':
-                    result.sort((a, b) => a.name.localeCompare(b.name));
-                    break;
-                default:
-                    break;
-            }
-            return result;
+        products: [],
+        cart: [],
+        async fetchProducts() {
+            const response = await fetch('../assets/js/products.json');
+            this.products = await response.json();
         },
-
-        // Ajouter un produit au panier
         addToCart(product) {
-            this.cart.addToCart(product);
+            this.cart.push(product);
+            this.showNotification(`${product.name} a été ajouté au panier.`);
+        },
+        showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.remove(), 3000);
+        },
+        init() {
+            this.fetchProducts();
         },
     };
 }
 
-// Initialisation d'Alpine.js
 document.addEventListener('alpine:init', () => {
-    Alpine.data('productPage', productPage);  // Enregistrer la fonction productPage
+    Alpine.data('productList', productList);
 });
-
-// Initialisation du panier
-cart.init();
-
-// Rendre ces objets accessibles globalement
-window.cart = cart;
-window.products = products;
