@@ -16,8 +16,7 @@
     <script type="module" src="assets/js/main.js"></script>
 </head>
 <body class="bg-gray-50" x-data="{ cartOpen: false, products: [], cart: {} }"
-    <script type="module">
-    async function init() {
+       async function init() {
     // Initialize cart
     const savedCart = localStorage.getItem('luxibre_cart');
     cart = {
@@ -56,7 +55,6 @@
     const module = await import('../assets/js/products.js'); // Note the change
     products = module.default;
 }
-</script>
 
     
     <!-- Header -->
