@@ -13,7 +13,7 @@
 <body class="bg-gray-50" x-data="{
     products: [], 
     async init() {
-        const module = await import('../assets/js/products.js');
+        const module = await import('/assets/js/products.js');
         this.products = module.default;
     }
 }" x-init="init()">
