@@ -4,82 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luxibre - Produits</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css" />
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script type="module" src="../assets/js/products.js" defer></script>
+    <script type="module">
+        import products, { calculateDiscount } from '../assets/js/products.js';
+
+        function productList() {
+            return {
+                products: products,
+                calculateDiscount,
+                addToCart(product) {
+                    alert(`${product.name} a été ajouté au panier !`);
+                },
+            };
+        }
+
+        window.productList = productList;
+    </script>
 </head>
-<body x-data="productList()">
-    <!-- Header -->
-    <header class="bg-black text-white py-8 text-center">
-        <div class="container mx-auto px-4">
-            <h1 class="text-5xl font-bold tracking-wide font-serif">Produits Luxibre</h1>
-            <nav class="mt-4">
-                <a href="../index.html" class="text-gray-300 hover:text-white font-semibold">Accueil</a>
-                <a href="../pages/about.html" class="text-gray-300 hover:text-white font-semibold ml-6">À propos</a>
-                <a href="../pages/contact.html" class="text-gray-300 hover:text-white font-semibold ml-6">Contact</a>
-            </nav>
+<body>
+    <header>
+        <div class="container">
+            <h1>Produits Luxibre</h1>
+            <a href="../index.html">Accueil</a>
         </div>
     </header>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-12">
-        <section class="grid md:grid-cols-3 gap-8">
+    <main x-data="productList()">
+        <section class="products" id="products-container">
             <template x-for="product in products" :key="product.id">
-                <div class="product-card bg-white rounded-lg overflow-hidden relative group shadow-lg">
-                    <img :src="product.image" :alt="product.name" class="w-full h-96 object-cover group-hover:opacity-90 transition">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-2" x-text="product.name"></h3>
-                        <p class="text-gray-600 mb-4 h-16 overflow-hidden" x-text="product.description"></p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-3xl font-bold text-red-600" x-text="`${product.price}€`"></span>
-                                <span class="line-through ml-2 text-gray-400" x-text="`${product.originalPrice}€`"></span>
-                                <span class="ml-2 text-green-600 font-semibold" x-text="`-${calculateDiscount(product.price, product.originalPrice)}%`"></span>
-                            </div>
-                            <button @click="addToCart(product)" class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
-                                Ajouter au panier
-                            </button>
-                        </div>
-                    </div>
+                <div class="product-card">
+                    <img :src="'../' + product.image" :alt="product.name" />
+                    <h3 x-text="product.name"></h3>
+                    <p x-text="`${product.price}€`"></p>
+                    <p x-show="product.originalPrice !== product.price" x-text="`Ancien prix : ${product.originalPrice}€ (-${calculateDiscount(product.price, product.originalPrice)}%)`"></p>
+                    <button @click="addToCart(product)">Ajouter au panier</button>
                 </div>
             </template>
         </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="bg-black text-white py-12">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2024 Luxibre. Tous droits réservés.</p>
-        </div>
+    <footer>
+        <p>© 2024 Luxibre - Tous droits réservés.</p>
     </footer>
-
-    <script>
-        function productList() {
-            return {
-                products: [],
-                async init() {
-                    const response = await fetch("../assets/js/products.js");
-                    const module = await response.json();
-                    this.products = module.default;
-                },
-                addToCart(product) {
-                    let cart = JSON.parse(localStorage.getItem('luxibre_cart')) || [];
-                    const existingItem = cart.find(item => item.id === product.id);
-                    if (existingItem) {
-                        existingItem.quantity += 1;
-                    } else {
-                        cart.push({ ...product, quantity: 1 });
-                    }
-                    localStorage.setItem('luxibre_cart', JSON.stringify(cart));
-                    alert(`${product.name} ajouté au panier !`);
-                },
-                calculateDiscount(price, originalPrice) {
-                    return Math.round(((originalPrice - price) / originalPrice) * 100);
-                }
-            };
-        }
-    </script>
 </body>
 </html>
