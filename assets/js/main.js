@@ -3,7 +3,7 @@ function productList() {
         products: [],
         cart: [],
         async fetchProducts() {
-            const response = await fetch('../assets/js/products.json');
+            const response = await fetch('/assets/js/products.json');
             this.products = await response.json();
         },
         addToCart(product) {
