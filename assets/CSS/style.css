@@ -1,87 +1,90 @@
-/* assets/css/style.css */
-
 /* Base styles */
-body { 
-    font-family: 'Montserrat', sans-serif; 
-    background-color: #f3f4f6;
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    background-color: #f8f9fa;
+    color: #333;
 }
 
-/* Product card styles */
-.product-card {
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-}
-
-.product-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
-}
-
-.limited-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #e53e3e;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-}
-
-/* Cart styles */
-.cart-popup {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    width: 320px;
-    z-index: 1000;
-}
-
-.cart-popup.active {
-    display: block;
-}
-
-.cart-item {
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 1rem;
+}
+
+header {
+    background-color: #fff;
     border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 0;
+    text-align: center;
 }
 
-.cart-item:last-child {
-    border-bottom: none;
+header h1 {
+    margin: 0;
+    font-size: 2rem;
 }
 
-/* Notification styles */
+nav a {
+    margin: 0 1rem;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.hero {
+    text-align: center;
+    padding: 4rem 1rem;
+    background: #007bff;
+    color: #fff;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero .btn {
+    padding: 0.5rem 1rem;
+    background: #fff;
+    color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 2rem 1rem;
+}
+
+.product-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
 .notification {
     position: fixed;
     top: 1rem;
     right: 1rem;
+    background: #333;
+    color: #fff;
     padding: 1rem;
-    background: black;
-    color: white;
-    border-radius: 0.5rem;
+    border-radius: 8px;
     z-index: 1000;
     animation: fadeInOut 3s ease-in-out;
 }
 
 @keyframes fadeInOut {
-    0% { opacity: 0; transform: translateY(-20px); }
-    10% { opacity: 1; transform: translateY(0); }
-    90% { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-20px); }
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .cart-popup {
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-        top: auto;
-        left: 0;
-        border-radius: 1rem 1rem 0 0;
-    }
+    0%, 100% { opacity: 0; transform: translateY(-10px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
 }
