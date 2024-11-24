@@ -51,7 +51,6 @@
     const module = await import('https://luxibre.netlify.app/assets/js/products.js');
     products = module.default;
 }">
-
     <!-- Header -->
     <header class="bg-black text-white py-8 text-center">
         <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
@@ -72,7 +71,7 @@
                     🛒 Panier (<span x-text="cart.items.length">0</span>)
                 </button>
                 <!-- Cart Modal -->
-                <div x-show="cartOpen" class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg p-4 z-50">
+                <div x-show="cartOpen" class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg p-4 z-50 transition-all duration-500 ease-in-out">
                     <h3 class="text-xl font-semibold mb-4">Votre Panier</h3>
                     <template x-if="cart.items.length === 0">
                         <p class="text-gray-500">Votre panier est vide</p>
@@ -86,7 +85,7 @@
                     </template>
                     <div x-show="cart.items.length > 0" class="mt-4">
                         <p class="font-bold">Total: <span x-text="`${cart.getTotal()}€`"></span></p>
-                        <button @click="cart.checkout()" class="w-full bg-black text-white py-2 rounded mt-2">
+                        <button @click="cart.checkout()" class="w-full bg-black text-white py-2 rounded mt-2 hover:bg-gray-800 transition-colors">
                             Procéder au paiement
                         </button>
                     </div>
@@ -95,10 +94,10 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Dynamic Slide Show -->
     <section id="hero-section" class="relative h-screen overflow-hidden">
-        <div id="slides-container" class="absolute inset-0 transition-all duration-1000">
-            <!-- Slides are dynamically updated -->
+        <div id="slides-container" class="absolute inset-0 transition-all duration-1000 ease-in-out">
+            <!-- Dynamic Slide content will be injected here -->
         </div>
         <div class="relative z-20 flex flex-col items-center justify-center text-white px-4 h-full text-center">
             <h1 id="hero-title" class="text-6xl font-bold mb-6">Collection Exclusive</h1>
@@ -116,10 +115,10 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 <template x-for="product in products.slice(0, 4)" :key="product.id">
                     <div class="border rounded-lg overflow-hidden bg-white shadow-lg">
-                        <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover">
+                        <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover" loading="lazy">
                         <div class="p-4">
                             <h3 class="text-lg font-semibold" x-text="product.name"></h3>
-                            <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800">
+                            <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition-colors">
                                 Ajouter au panier
                             </button>
                         </div>
@@ -157,6 +156,7 @@
         </div>
     </footer>
 
+    <!-- Script pour gérer les slides -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const slides = [
@@ -178,21 +178,21 @@
             ];
 
             let slideIndex = 0;
+            const slideTitle = document.getElementById('hero-title');
+            const slideSubtitle = document.getElementById('hero-subtitle');
+            const slidesContainer = document.getElementById('slides-container');
 
             function changeSlide() {
                 const slide = slides[slideIndex];
-                document.getElementById('hero-title').innerText = slide.title;
-                document.getElementById('hero-subtitle').innerText = slide.subtitle;
-
-                const slidesContainer = document.getElementById('slides-container');
+                slideTitle.innerText = slide.title;
+                slideSubtitle.innerText = slide.subtitle;
                 slidesContainer.style.backgroundImage = `url(${slide.image})`;
 
                 slideIndex = (slideIndex + 1) % slides.length;
             }
 
-            setInterval(changeSlide, 5000);  // Change slide every 5 seconds
-            changeSlide();  // Initial slide
-
+            setInterval(changeSlide, 5000);  // Changer de slide toutes les 5 secondes
+            changeSlide();  // Slide initial
         });
     </script>
 </body>
