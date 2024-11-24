@@ -95,54 +95,39 @@
         </div>
     </nav>
 
-    <section class="py-16">
-    <div class="container mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-8">Produits Populaires</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <template x-for="product in products.slice(0, 4)" :key="product.id">
-                <div class="border rounded-lg overflow-hidden bg-white shadow-lg">
-                    <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover">
-                    <div class="p-4">
-                        <h3 class="text-lg font-semibold" x-text="product.name"></h3>
-                        <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800">
-                            Ajouter au panier
-                        </button>
-                    </div>
-                </div>
-            </template>
+    <!-- Hero Section -->
+    <section id="hero-section" class="relative h-screen">
+        <div id="slides-container" class="absolute inset-0 overflow-hidden">
+            <!-- Slides are dynamically updated -->
         </div>
-    </div>
-    </section>
-    
-    
-    <!-- Section "À propos" -->
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4 text-center sm:text-left">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-6">À propos de LUXIBRE</h2>
-            <p class="text-lg text-gray-700 leading-relaxed">
-                Chez LUXIBRE, nous croyons que le luxe est plus qu'un simple produit. C'est une expérience. 
-                Découvrez notre collection soigneusement sélectionnée de produits haut de gamme, alliant qualité et raffinement.
+        <div class="relative h-full flex flex-col items-center justify-center text-white px-4">
+            <h1 id="hero-title" class="text-6xl font-bold mb-6 text-center">Collection Exclusive</h1>
+            <p id="hero-subtitle" class="text-2xl mb-8 text-center max-w-2xl">
+                Des produits uniques sélectionnés pour vous
             </p>
+            <button class="bg-white text-black px-8 py-4 rounded-full font-semibold flex items-center gap-2 hover:bg-gray-100 transition-colors">
+                Découvrir la Collection
+            </button>
         </div>
+        <div id="slide-indicators" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2"></div>
     </section>
 
-    <!-- Section Témoignages -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-8">Ce que disent nos clients</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="p-6 bg-white shadow-lg rounded">
-                    <p class="text-gray-700 italic">"Service impeccable et produits de qualité. Une vraie expérience de luxe !"</p>
-                    <h4 class="mt-4 font-bold">- Client 1</h4>
-                </div>
-                <div class="p-6 bg-white shadow-lg rounded">
-                    <p class="text-gray-700 italic">"Les articles sont encore plus beaux en vrai. Je suis ravie de mon achat."</p>
-                    <h4 class="mt-4 font-bold">- Client 2</h4>
-                </div>
-                <div class="p-6 bg-white shadow-lg rounded">
-                    <p class="text-gray-700 italic">"Une sélection unique et un service client très réactif. Merci !"</p>
-                    <h4 class="mt-4 font-bold">- Client 3</h4>
-                </div>
+    <!-- Produits Populaires -->
+    <section class="py-16">
+        <div class="container mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-8">Produits Populaires</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <template x-for="product in products.slice(0, 4)" :key="product.id">
+                    <div class="border rounded-lg overflow-hidden bg-white shadow-lg">
+                        <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold" x-text="product.name"></h3>
+                            <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800">
+                                Ajouter au panier
+                            </button>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
     </section>
@@ -182,6 +167,31 @@
             <p>&copy; 2024 LUXIBRE. Tous droits réservés.</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const slides = [
+                { image: "/api/placeholder/1920/1080", title: "Collection Exclusive", subtitle: "Des produits uniques sélectionnés pour vous" },
+                { image: "/api/placeholder/1920/1080", title: "Qualité Premium", subtitle: "Le luxe accessible à tous" },
+                { image: "/api/placeholder/1920/1080", title: "Livraison Express", subtitle: "Recevez vos produits en 7-14 jours" }
+            ];
+            const container = document.getElementById('slides-container');
+            const indicators = document.getElementById('slide-indicators');
+            const title = document.getElementById('hero-title');
+            const subtitle = document.getElementById('hero-subtitle');
+
+            let current = 0;
+
+            const updateSlide = () => {
+                container.innerHTML = slides.map((s, i) => `
+                    <div class="${i === current ? 'opacity-100' : 'opacity-0'}"></div>`).join('');
+            };
+            setInterval(() => {
+                current = (current + 1) % slides.length;
+                updateSlide();
+            }, 5000);
+        });
+    </script>
 
 </body>
 </html>
