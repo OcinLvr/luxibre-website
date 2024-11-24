@@ -67,8 +67,8 @@
                 <a href="pages/about.html" class="text-black hover:text-gray-700 font-semibold">À Propos</a>
                 <a href="pages/contact.html" class="text-black hover:text-gray-700 font-semibold">Contact</a>
             </div>
-            <div class="relative">
-                <button @click="cartOpen = !cartOpen" class="text-black hover:text-gray-700 ml-8">
+            <div class="relative absolute right-4">
+                <button @click="cartOpen = !cartOpen" class="text-black hover:text-gray-700">
                     🛒 Panier (<span x-text="cart.items.length">0</span>)
                 </button>
                 <!-- Cart Modal -->
@@ -97,7 +97,7 @@
 
     <!-- Section "À propos" -->
     <section class="py-16 bg-gray-100">
-        <div class="container mx-auto text-center">
+        <div class="container mx-auto px-4 text-center sm:text-left">
             <h2 class="text-4xl font-bold mb-6">À propos de LUXIBRE</h2>
             <p class="text-lg text-gray-700 leading-relaxed">
                 Chez LUXIBRE, nous croyons que le luxe est plus qu'un simple produit. C'est une expérience. 
