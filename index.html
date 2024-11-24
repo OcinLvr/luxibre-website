@@ -9,37 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <style>
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1920/1080');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
-        }
-        .cart-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: #e53e3e;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 12px;
-        }
-        .product-card {
-            transition: transform 0.3s ease;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        .scroll-indicator {
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-    </style>
 </head>
 <body class="bg-gray-50 overflow-x-hidden" x-data="{ 
     cartOpen: false, 
@@ -98,6 +67,12 @@
     products = module.default;
 }">
 
+    <!-- Header -->
+    <header class="bg-black text-white py-8 text-center">
+        <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
+        <p class="text-xl mt-3 opacity-80">Liberté & Luxe - Une Sélection Exclusive</p>
+    </header>
+    
     <!-- Notification -->
     <div x-show="showNotification" 
          x-transition:enter="transition ease-out duration-300"
