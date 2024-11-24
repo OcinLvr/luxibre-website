@@ -10,107 +10,148 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
-    <script type="module" src="assets/js/products.js"></script>
-    <script type="module" src="assets/js/cart.js"></script>
-    <script type="module" src="assets/js/main.js"></script>
 </head>
-<body class="bg-gray-50 overflow-x-hidden" 
-      x-data="{ cartOpen: false, products: [], cart: {}, currentSlide: 0, expandedProduct: null }" 
-      x-init="async function init() {
-          const savedCart = localStorage.getItem('luxibre_cart');
-          cart = {
-              items: savedCart ? JSON.parse(savedCart) : [],
-              addToCart(product) {
-                  const existingItem = this.items.find(item => item.id === product.id);
-                  if (existingItem) existingItem.quantity += 1;
-                  else this.items.push({ ...product, quantity: 1 });
-                  this.saveCart();
-              },
-              removeFromCart(productId) {
-                  this.items = this.items.filter(item => item.id !== productId);
-                  this.saveCart();
-              },
-              getTotal() {
-                  return this.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
-              },
-              saveCart() {
-                  localStorage.setItem('luxibre_cart', JSON.stringify(this.items));
-              },
-              checkout() {
-                  if (this.items.length === 0) alert('Votre panier est vide');
-                  else {
-                      alert(`Merci pour votre commande !\nTotal : ${this.getTotal()}€`);
-                      this.items = [];
-                      this.saveCart();
-                  }
-              }
-          };
-          const module = await import('/api/placeholder/products.js');
-          products = module.default;
-      } init();">
+<body class="bg-gray-50 overflow-x-hidden" x-data="{ 
+    cartOpen: false, 
+    products: [], 
+    cart: {}, 
+    expandedProduct: null,
+    currentSlide: 0,
+    slides: [
+        {
+            image: '/api/placeholder/1920/1080',
+            title: 'Collection Exclusive',
+            subtitle: 'Des produits uniques sélectionnés pour vous'
+        },
+        {
+            image: '/api/placeholder/1920/1080',
+            title: 'Qualité Premium',
+            subtitle: 'Le luxe accessible à tous'
+        },
+        {
+            image: '/api/placeholder/1920/1080',
+            title: 'Livraison Express',
+            subtitle: 'Recevez vos produits en 7-14 jours'
+        }
+    ]
+}" 
+x-init="
+    setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+    }, 5000);
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-black text-white py-4 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center px-4">
-            <a href="index.html" class="text-2xl font-bold font-serif">LUXIBRE</a>
-            <div class="space-x-4 flex">
-                <a href="index.html" class="hover:text-gray-300">Accueil</a>
-                <a href="pages/products.html" class="hover:text-gray-300">Produits</a>
-                <a href="pages/about.html" class="hover:text-gray-300">À Propos</a>
-                <a href="pages/contact.html" class="hover:text-gray-300">Contact</a>
+    async function init() {
+        const savedCart = localStorage.getItem('luxibre_cart');
+        cart = {
+            items: savedCart ? JSON.parse(savedCart) : [],
+            addToCart(product) {
+                const existingItem = this.items.find(item => item.id === product.id);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    this.items.push({ ...product, quantity: 1 });
+                }
+                this.saveCart();
+            },
+            removeFromCart(productId) {
+                this.items = this.items.filter(item => item.id !== productId);
+                this.saveCart();
+            },
+            getTotal() {
+                return this.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+            },
+            saveCart() {
+                localStorage.setItem('luxibre_cart', JSON.stringify(this.items));
+            },
+            checkout() {
+                if (this.items.length === 0) {
+                    alert('Votre panier est vide');
+                    return;
+                }
+                alert(`Merci pour votre commande !\nTotal : ${this.getTotal()}€`);
+                this.items = [];
+                this.saveCart();
+            }
+        };
+        
+        const module = await import('https://luxibre.netlify.app/assets/js/products.js');
+        products = module.default;
+    }
+    init();
+">
+
+    <!-- Navigation Fixe -->
+    <nav class="fixed w-full z-50 bg-black bg-opacity-90 text-white py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wide font-serif">LUXIBRE</h1>
+            <div class="flex space-x-6">
+                <a href="index.html" class="hover:text-gray-300 font-semibold">Accueil</a>
+                <a href="pages/products.html" class="hover:text-gray-300 font-semibold">Produits</a>
+                <a href="pages/about.html" class="hover:text-gray-300 font-semibold">À Propos</a>
+                <a href="pages/contact.html" class="hover:text-gray-300 font-semibold">Contact</a>
             </div>
-            <button @click="cartOpen = !cartOpen" class="relative">
-                🛒 (<span x-text="cart.items.length">0</span>)
-            </button>
+            <div class="relative">
+                <button @click="cartOpen = !cartOpen" class="hover:text-gray-300">
+                    🛒 (<span x-text="cart.items.length">0</span>)
+                </button>
+                <!-- Cart Modal -->
+                <div x-show="cartOpen" @click.away="cartOpen = false" class="absolute right-0 mt-4 w-80 bg-white text-black border rounded-lg shadow-lg p-4">
+                    <h3 class="text-xl font-semibold mb-4">Votre Panier</h3>
+                    <template x-if="cart.items.length === 0">
+                        <p class="text-gray-500">Votre panier est vide</p>
+                    </template>
+                    <template x-for="item in cart.items" :key="item.id">
+                        <div class="flex justify-between items-center mb-2">
+                            <span x-text="item.name"></span>
+                            <span x-text="`${item.price}€`"></span>
+                            <button @click="cart.removeFromCart(item.id)" class="text-red-500">×</button>
+                        </div>
+                    </template>
+                    <div x-show="cart.items.length > 0" class="mt-4">
+                        <p class="font-bold">Total: <span x-text="`${cart.getTotal()}€`"></span></p>
+                        <button @click="cart.checkout()" class="w-full bg-black text-white py-2 rounded mt-2">
+                            Procéder au paiement
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="h-screen relative bg-cover bg-center" style="background-image: url('/api/placeholder/1920/1080');">
-        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-        <div class="relative h-full flex items-center justify-center text-white text-center">
-            <div>
-                <h1 class="text-5xl font-serif mb-4">LUXIBRE</h1>
-                <p class="text-xl">Liberté & Luxe - Une Sélection Exclusive</p>
-                <a href="#produits" class="mt-6 inline-block bg-white text-black px-6 py-3 rounded-full">Découvrir la Collection</a>
-            </div>
+    <!-- Section Héro Animée -->
+    <section class="relative h-screen">
+        <div class="absolute inset-0 overflow-hidden">
+            <template x-for="(slide, index) in slides" :key="index">
+                <div class="absolute inset-0 transition-opacity duration-1000"
+                     :class="currentSlide === index ? 'opacity-100' : 'opacity-0'">
+                    <img :src="slide.image" :alt="slide.title" class="object-cover w-full h-full">
+                    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+                </div>
+            </template>
         </div>
-    </header>
-
-    <!-- Produits Populaires -->
-    <section id="produits" class="py-16">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-8">Produits Populaires</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                <template x-for="product in products.slice(0, 4)" :key="product.id">
-                    <div class="border rounded-lg overflow-hidden shadow-md bg-white">
-                        <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold" x-text="product.name"></h3>
-                            <button @click="cart.addToCart(product)" class="mt-4 bg-black text-white py-2 w-full rounded hover:bg-gray-800">Ajouter au panier</button>
-                        </div>
-                    </div>
-                </template>
-            </div>
+        <div class="relative h-full flex flex-col items-center justify-center text-white px-4">
+            <template x-for="(slide, index) in slides" :key="index">
+                <div x-show="currentSlide === index" 
+                     class="text-center transition-all duration-500"
+                     :class="currentSlide === index ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform translate-y-4'">
+                    <h1 class="text-6xl font-bold mb-6" x-text="slide.title"></h1>
+                    <p class="text-2xl mb-8" x-text="slide.subtitle"></p>
+                </div>
+            </template>
+            <button class="bg-white text-black px-8 py-4 rounded-full font-semibold flex items-center gap-2 hover:bg-gray-100 transition-colors">
+                Découvrir la Collection
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
         </div>
-    </section>
-
-    <!-- Section "À Propos" -->
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-6">À propos de nous</h2>
-            <p class="text-lg text-gray-700">Chez LUXIBRE, nous croyons que le luxe est une expérience. Découvrez nos produits soigneusement sélectionnés, alliant qualité et raffinement.</p>
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+            <template x-for="(slide, index) in slides" :key="index">
+                <button @click="currentSlide = index"
+                        class="w-3 h-3 rounded-full transition-all"
+                        :class="currentSlide === index ? 'bg-white w-8' : 'bg-white/50'">
+                </button>
+            </template>
         </div>
     </section>
-
-    <!-- Témoignages -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-6">Ce que disent nos clients</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="p-6 bg-gray-50 shadow-md rounded-lg">
-                    <p class="text-gray-700 italic">"Service impeccable et produits de qualité. Une vraie expérience de luxe !"</p>
-                    <h4 class="font-bold mt-4">- Client 1</h4>
                 </div>
                 <div class="p-6 bg-gray-50 shadow-md rounded-lg">
                     <p class="text-gray-700 italic">"Les articles sont encore plus beaux en vrai. Je suis ravie de mon achat."</p>
