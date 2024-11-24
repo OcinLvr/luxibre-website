@@ -64,6 +64,8 @@
             <div class="flex space-x-6">
                 <a href="index.html" class="text-black hover:text-gray-700 font-semibold">Accueil</a>
                 <a href="pages/products.html" class="text-black hover:text-gray-700 font-semibold">Produits</a>
+                <a href="pages/about.html" class="text-black hover:text-gray-700 font-semibold">À Propos</a>
+                <a href="pages/contact.html" class="text-black hover:text-gray-700 font-semibold">Contact</a>
             </div>
             <div class="relative">
                 <button @click="cartOpen = !cartOpen" class="text-black hover:text-gray-700">
@@ -104,19 +106,6 @@
         </div>
     </section>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-12">
-        <section class="overflow-hidden">
-            <div class="whitespace-nowrap overflow-x-auto space-x-4 scrollbar-hide">
-                <template x-for="product in products" :key="product.id">
-                    <div class="inline-block w-40 h-40 border rounded-lg overflow-hidden bg-white flex-shrink-0">
-                        <img :src="product.image" :alt="product.name" class="w-full h-full object-cover">
-                    </div>
-                </template>
-            </div>
-        </section>
-    </main>
-
     <!-- Section Témoignages -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto text-center">
@@ -140,46 +129,30 @@
 
     <!-- Footer -->
     <footer class="bg-black text-white py-12">
-        <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
-            <!-- Section LUXIBRE -->
-            <div>
-                <h4 class="text-xl font-semibold mb-4 text-center md:text-left">LUXIBRE</h4>
-                <p class="text-gray-300 text-center md:text-left">Découvrez l'élégance à portée de main. Des produits de luxe sélectionnés avec passion.</p>
-            </div>
-            
-            <!-- Section Liens Rapides -->
-            <div>
-                <h4 class="text-xl font-semibold mb-4 text-center md:text-left">Liens Rapides</h4>
-                <ul class="text-center md:text-left space-y-2">
-                    <li><a href="index.html" class="text-gray-300 hover:text-white">Accueil</a></li>
-                    <li><a href="pages/products.html" class="text-gray-300 hover:text-white">Produits</a></li>
-                </ul>
-            </div>
-            
+        <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
             <!-- Section Contact -->
-            <div>
-                <h4 class="text-xl font-semibold mb-4 text-center md:text-left">Contactez-nous</h4>
-                <p class="text-gray-300 text-center md:text-left">Email: <a href="mailto:contact@luxibre.com" class="hover:text-white">contact@luxibre.com</a></p>
-                <p class="text-gray-300 text-center md:text-left">Téléphone: +33 1 23 45 67 89</p>
+            <div class="text-center md:text-left mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4">Contactez-nous</h4>
+                <p class="text-gray-300">Email: <a href="mailto:contact@luxibre.com" class="hover:text-white">contact@luxibre.com</a></p>
+                <p class="text-gray-300">Téléphone: +33 1 23 45 67 89</p>
                 <div class="mt-4 flex justify-center md:justify-start space-x-6">
-                    <a href="#" class="text-gray-300 hover:text-white">
-                        <i class="fab fa-instagram"></i> Instagram
-                    </a>
-                    <a href="#" class="text-gray-300 hover:text-white">
-                        <i class="fab fa-facebook"></i> Facebook
-                    </a>
-                    <a href="#" class="text-gray-300 hover:text-white">
-                        <i class="fab fa-twitter"></i> Twitter
-                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white">Instagram</a>
+                    <a href="#" class="text-gray-300 hover:text-white">Facebook</a>
+                    <a href="#" class="text-gray-300 hover:text-white">Twitter</a>
                 </div>
             </div>
+
+            <!-- Section LUXIBRE -->
+            <div class="text-center md:text-left mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4">LUXIBRE</h4>
+                <p class="text-gray-300">Découvrez l'élégance à portée de main. Des produits de luxe sélectionnés avec passion.</p>
+            </div>
         </div>
+
         <div class="text-center mt-8 border-t border-gray-800 pt-4">
             <p>&copy; 2024 LUXIBRE. Tous droits réservés.</p>
         </div>
     </footer>
 
-    <!-- Font Awesome for social icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
 </html>
