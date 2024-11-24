@@ -101,10 +101,7 @@
         <div class="whitespace-nowrap overflow-x-auto space-x-4 scrollbar-hide">
             <template x-for="product in products" :key="product.id">
                 <div class="inline-block w-40 h-40 border rounded-lg overflow-hidden bg-white flex-shrink-0">
-                    <img :src="product.image" :alt="product.name" class="w-full h-24 object-cover">
-                    <div class="p-2 text-center">
-                        <h3 class="text-sm font-medium truncate" x-text="product.name"></h3>
-                    </div>
+                    <img :src="product.image" :alt="product.name" class="w-full h-full object-cover">
                 </div>
             </template>
         </div>
