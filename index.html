@@ -13,7 +13,7 @@
     <script type="module" src="assets/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="bg-gray-50" x-data="{ cartOpen: false, products: [], cart: {}, expandedProduct: null }"
+<body class="bg-gray-50 overflow-x-hidden" x-data="{ cartOpen: false, products: [], cart: {}, expandedProduct: null }"
        x-init="async function init() {
     const savedCart = localStorage.getItem('luxibre_cart');
     cart = {
@@ -98,7 +98,7 @@
     <!-- Section "À propos" -->
     <section class="py-16 bg-gray-100">
         <div class="container mx-auto px-4 text-center sm:text-left">
-            <h2 class="text-4xl font-bold mb-6">À propos de LUXIBRE</h2>
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">À propos de LUXIBRE</h2>
             <p class="text-lg text-gray-700 leading-relaxed">
                 Chez LUXIBRE, nous croyons que le luxe est plus qu'un simple produit. C'est une expérience. 
                 Découvrez notre collection soigneusement sélectionnée de produits haut de gamme, alliant qualité et raffinement.
