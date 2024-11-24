@@ -3,104 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Découvrez notre sélection de produits tendance et de qualité, soigneusement choisis pour vous.">
-    <title>LUXIBRE - Tendance et Élégance</title>
+    <meta name="description" content="LUXIBRE - Sélection Exclusive de Produits de Luxe. Découvrez une collection unique de produits haut de gamme.">
+    <title>LUXIBRE - Sélection Exclusive de Produits de Luxe</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <script type="module" src="assets/js/cart.js"></script>
     <script type="module" src="assets/js/products.js"></script>
     <script type="module" src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="bg-gray-50 overflow-x-hidden" x-data="{ cartOpen: false, products: [], cart: {}, expandedProduct: null }">
+<body class="bg-gray-50 overflow-x-hidden" x-data="{ cartOpen: false, products: [], cart: {}, expandedProduct: null }"
+       x-init="async function init() {
+    const savedCart = localStorage.getItem('luxibre_cart');
+    cart = {
+        items: savedCart ? JSON.parse(savedCart) : [],
+        addToCart(product) {
+            const existingItem = this.items.find(item => item.id === product.id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                this.items.push({ ...product, quantity: 1 });
+            }
+            this.saveCart();
+        },
+        removeFromCart(productId) {
+            this.items = this.items.filter(item => item.id !== productId);
+            this.saveCart();
+        },
+        getTotal() {
+            return this.items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+        },
+        saveCart() {
+            localStorage.setItem('luxibre_cart', JSON.stringify(this.items));
+        },
+        checkout() {
+            if (this.items.length === 0) {
+                alert('Votre panier est vide');
+                return;
+            }
+            alert(`Merci pour votre commande !\nTotal : ${this.getTotal()}€`);
+            this.items = [];
+            this.saveCart();
+        }
+    };
+    
+    const module = await import('https://luxibre.netlify.app/assets/js/products.js');
+    products = module.default;
+}">
 
-    <!-- Hero Section -->
-    <header class="relative bg-black text-white h-screen">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
-        <img src="assets/images/hero.jpg" alt="Bannière Luxe" class="absolute inset-0 w-full h-full object-cover">
-        <div class="relative z-10 text-center flex flex-col justify-center h-full px-6">
-            <h1 class="text-5xl font-bold font-serif tracking-wide">Bienvenue chez LUXIBRE</h1>
-            <p class="text-xl mt-4 opacity-90">Découvrez la tendance qui redéfinit le luxe.</p>
-            <a href="#products" class="mt-6 px-8 py-4 bg-white text-black font-bold text-lg rounded hover:bg-gray-200">
-                Découvrir nos produits
-            </a>
-        </div>
+    <!-- Header -->
+    <header class="bg-black text-white py-8 text-center">
+        <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
+        <p class="text-xl mt-3 opacity-80">Liberté & Luxe - Une Sélection Exclusive</p>
     </header>
 
-    <!-- Produits tendance -->
-    <section id="products" class="py-16">
-        <div class="container mx-auto">
-            <h2 class="text-4xl font-bold text-center mb-8">Produits Tendance</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                <template x-for="product in products.slice(0, 8)" :key="product.id">
-                    <div class="border rounded-lg overflow-hidden bg-white shadow-lg hover:scale-105 transition-transform duration-300">
-                        <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold" x-text="product.name"></h3>
-                            <p class="text-gray-500 mt-2" x-text="`${product.price}€`"></p>
-                            <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800">
-                                Ajouter au panier
-                            </button>
-                        </div>
-                    </div>
-                </template>
+    <!-- Navigation -->
+    <nav class="bg-gray-100 py-4 shadow-md">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex space-x-6">
+                <a href="index.html" class="text-black hover:text-gray-700 font-semibold">Accueil</a>
+                <a href="pages/products.html" class="text-black hover:text-gray-700 font-semibold">Produits</a>
+                <a href="pages/about.html" class="text-black hover:text-gray-700 font-semibold">À Propos</a>
+                <a href="pages/contact.html" class="text-black hover:text-gray-700 font-semibold">Contact</a>
             </div>
+            <div class="relative absolute right-4">
+                <button @click="cartOpen = !cartOpen" class="text-black hover:text-gray-700">
+                    🛒 Panier (<span x-text="cart.items.length">0</span>)
+                </button>
+                <!-- Cart Modal -->
+                <div x-show="cartOpen" class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg p-4 z-50">
+                    <h3 class="text-xl font-semibold mb-4">Votre Panier</h3>
+                    <template x-if="cart.items.length === 0">
+                        <p class="text-gray-500">Votre panier est vide</p>
+                    </template>
+                    <template x-for="item in cart.items" :key="item.id">
+                        <div class="flex justify-between items-center mb-2">
+                            <span x-text="item.name"></span>
+                            <span x-text="`${item.price}€`"></span>
+                            <button @click="cart.removeFromCart(item.id)" class="text-red-500">Supprimer</button>
+                        </div>
+                    </template>
+                    <div x-show="cart.items.length > 0" class="mt-4">
+                        <p class="font-bold">Total: <span x-text="`${cart.getTotal()}€`"></span></p>
+                        <button @click="cart.checkout()" class="w-full bg-black text-white py-2 rounded mt-2">
+                            Procéder au paiement
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="py-16">
+    <div class="container mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-8">Produits Populaires</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <template x-for="product in products.slice(0, 4)" :key="product.id">
+                <div class="border rounded-lg overflow-hidden bg-white shadow-lg">
+                    <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold" x-text="product.name"></h3>
+                        <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+    </section>
+    
+    
+    <!-- Section "À propos" -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4 text-center sm:text-left">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">À propos de LUXIBRE</h2>
+            <p class="text-lg text-gray-700 leading-relaxed">
+                Chez LUXIBRE, nous croyons que le luxe est plus qu'un simple produit. C'est une expérience. 
+                Découvrez notre collection soigneusement sélectionnée de produits haut de gamme, alliant qualité et raffinement.
+            </p>
         </div>
     </section>
 
-    <!-- Témoignages -->
+    <!-- Section Témoignages -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold mb-8">Ce que disent nos clients</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="p-6 bg-white shadow-lg rounded">
-                    <p class="text-gray-700 italic">"La qualité des produits est exceptionnelle, je recommande vivement !"</p>
-                    <h4 class="mt-4 font-bold">- Clara M.</h4>
+                    <p class="text-gray-700 italic">"Service impeccable et produits de qualité. Une vraie expérience de luxe !"</p>
+                    <h4 class="mt-4 font-bold">- Client 1</h4>
                 </div>
                 <div class="p-6 bg-white shadow-lg rounded">
-                    <p class="text-gray-700 italic">"Une expérience client inégalée et des produits magnifiques."</p>
-                    <h4 class="mt-4 font-bold">- Jean D.</h4>
+                    <p class="text-gray-700 italic">"Les articles sont encore plus beaux en vrai. Je suis ravie de mon achat."</p>
+                    <h4 class="mt-4 font-bold">- Client 2</h4>
                 </div>
                 <div class="p-6 bg-white shadow-lg rounded">
-                    <p class="text-gray-700 italic">"Des prix compétitifs pour une qualité impressionnante."</p>
-                    <h4 class="mt-4 font-bold">- Sophie L.</h4>
+                    <p class="text-gray-700 italic">"Une sélection unique et un service client très réactif. Merci !"</p>
+                    <h4 class="mt-4 font-bold">- Client 3</h4>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Bannière promotionnelle -->
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center">
-        <h2 class="text-4xl font-bold mb-4">-20% sur votre première commande</h2>
-        <p class="text-xl mb-6">Inscrivez-vous à notre newsletter et profitez de cette offre exclusive.</p>
-        <a href="#" class="px-8 py-4 bg-white text-black font-bold rounded hover:bg-gray-200">
-            S'inscrire maintenant
-        </a>
     </section>
 
     <!-- Footer -->
     <footer class="bg-black text-white py-12">
         <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <h4 class="text-xl font-semibold mb-4">LUXIBRE</h4>
-                <p class="text-gray-300">Découvrez des produits de qualité, soigneusement sélectionnés pour vous.</p>
-            </div>
-            <div>
-                <h4 class="text-xl font-semibold mb-4">Liens utiles</h4>
-                <ul>
-                    <li><a href="#" class="text-gray-300 hover:text-white">Politique de retour</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white">Nous contacter</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xl font-semibold mb-4">Suivez-nous</h4>
-                <div class="flex space-x-4">
+            <!-- Section Contact -->
+            <div class="text-center md:text-left mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4">Contactez-nous</h4>
+                <p class="text-gray-300">Email: <a href="mailto:contact@luxibre.com" class="hover:text-white">contact@luxibre.com</a></p>
+                <p class="text-gray-300">Téléphone: +33 1 23 45 67 89</p>
+                <div class="mt-4 flex justify-center md:justify-start space-x-6">
                     <a href="#" class="text-gray-300 hover:text-white">Instagram</a>
                     <a href="#" class="text-gray-300 hover:text-white">Facebook</a>
                     <a href="#" class="text-gray-300 hover:text-white">Twitter</a>
                 </div>
             </div>
+
+            <!-- Section LUXIBRE -->
+            <div class="text-center md:text-left mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4">LUXIBRE</h4>
+                <p class="text-gray-300">Découvrez l'élégance à portée de main. Des produits de luxe sélectionnés avec passion.</p>
+            </div>
+
+            <!-- Section Informations supplémentaires (si nécessaire) -->
+            <div class="text-center md:text-left mb-8 md:mb-0">
+                <h4 class="text-xl font-semibold mb-4">Informations</h4>
+                <ul>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Politique de confidentialité</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Conditions générales</a></li>
+                </ul>
+            </div>
         </div>
+
         <div class="text-center mt-8 border-t border-gray-800 pt-4">
             <p>&copy; 2024 LUXIBRE. Tous droits réservés.</p>
         </div>
