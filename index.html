@@ -6,12 +6,37 @@
     <meta name="description" content="LUXIBRE - Sélection Exclusive de Produits de Luxe. Découvrez une collection unique de produits haut de gamme.">
     <title>LUXIBRE - Sélection Exclusive de Produits de Luxe</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <script type="module" src="assets/js/cart.js"></script>
     <script type="module" src="assets/js/products.js"></script>
     <script type="module" src="assets/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        /* Modern styles for improved visuals */
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .hero-title {
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-hover:hover {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            transform: scale(1.05);
+            background-color: #333;
+        }
+
+        .cart-modal {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
 </head>
 <body class="bg-gray-50 overflow-x-hidden" x-data="{ cartOpen: false, products: [], cart: {}, expandedProduct: null }"
        x-init="async function init() {
@@ -52,13 +77,13 @@
     products = module.default;
 }">
     <!-- Header -->
-    <header class="bg-black text-white py-8 text-center">
-        <h1 class="text-5xl font-bold tracking-wide font-serif">LUXIBRE</h1>
-        <p class="text-xl mt-3 opacity-80">Liberté & Luxe - Une Sélection Exclusive</p>
+    <header class="bg-gradient-to-r from-gray-800 to-black text-white py-8 text-center">
+        <h1 class="text-5xl font-bold tracking-wide font-serif hero-title">LUXIBRE</h1>
+        <p class="text-xl mt-3 opacity-90">Liberté & Luxe - Une Sélection Exclusive</p>
     </header>
 
     <!-- Navigation -->
-    <nav class="bg-gray-100 py-4 shadow-md">
+    <nav class="bg-white py-4 shadow-lg fixed w-full top-0 left-0 z-50">
         <div class="container mx-auto px-4 flex justify-between items-center">
             <div class="flex space-x-6">
                 <a href="index.html" class="text-black hover:text-gray-700 font-semibold">Accueil</a>
@@ -66,12 +91,12 @@
                 <a href="pages/about.html" class="text-black hover:text-gray-700 font-semibold">À Propos</a>
                 <a href="pages/contact.html" class="text-black hover:text-gray-700 font-semibold">Contact</a>
             </div>
-            <div class="relative absolute right-4">
-                <button @click="cartOpen = !cartOpen" class="text-black hover:text-gray-700">
-                    🛒 Panier (<span x-text="cart.items.length">0</span>)
+            <div class="relative flex items-center space-x-4">
+                <button @click="cartOpen = !cartOpen" class="text-black hover:text-gray-700 relative">
+                    <span class="text-xl">🛒</span> <span class="font-semibold">Panier (<span x-text="cart.items.length">0</span>)</span>
                 </button>
                 <!-- Cart Modal -->
-                <div x-show="cartOpen" class="absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg p-4 z-50 transition-all duration-500 ease-in-out">
+                <div x-show="cartOpen" class="cart-modal absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg p-4 z-50">
                     <h3 class="text-xl font-semibold mb-4">Votre Panier</h3>
                     <template x-if="cart.items.length === 0">
                         <p class="text-gray-500">Votre panier est vide</p>
@@ -80,12 +105,12 @@
                         <div class="flex justify-between items-center mb-2">
                             <span x-text="item.name"></span>
                             <span x-text="`${item.price}€`"></span>
-                            <button @click="cart.removeFromCart(item.id)" class="text-red-500">Supprimer</button>
+                            <button @click="cart.removeFromCart(item.id)" class="text-red-500 hover:text-red-700">Supprimer</button>
                         </div>
                     </template>
                     <div x-show="cart.items.length > 0" class="mt-4">
                         <p class="font-bold">Total: <span x-text="`${cart.getTotal()}€`"></span></p>
-                        <button @click="cart.checkout()" class="w-full bg-black text-white py-2 rounded mt-2 hover:bg-gray-800 transition-colors">
+                        <button @click="cart.checkout()" class="w-full bg-black text-white py-2 rounded mt-2 btn-hover">
                             Procéder au paiement
                         </button>
                     </div>
@@ -95,14 +120,15 @@
     </nav>
 
     <!-- Hero Section with Dynamic Slide Show -->
-    <section id="hero-section" class="relative h-screen overflow-hidden">
+    <section id="hero-section" class="relative h-screen overflow-hidden bg-cover bg-center"
+             style="background-image: url('https://via.placeholder.com/1920x1080/111111/ffffff?text=Hero+Image');">
         <div id="slides-container" class="absolute inset-0 transition-all duration-1000 ease-in-out">
             <!-- Dynamic Slide content will be injected here -->
         </div>
         <div class="relative z-20 flex flex-col items-center justify-center text-white px-4 h-full text-center">
-            <h1 id="hero-title" class="text-6xl font-bold mb-6">Collection Exclusive</h1>
+            <h1 id="hero-title" class="text-6xl font-bold mb-6 hero-title">Collection Exclusive</h1>
             <p id="hero-subtitle" class="text-2xl mb-8 max-w-2xl">Des produits uniques sélectionnés pour vous</p>
-            <button class="bg-white text-black px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+            <button class="bg-white text-black px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors btn-hover">
                 Découvrir la Collection
             </button>
         </div>
@@ -114,11 +140,11 @@
             <h2 class="text-4xl font-bold text-center mb-8">Produits Populaires</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                 <template x-for="product in products.slice(0, 4)" :key="product.id">
-                    <div class="border rounded-lg overflow-hidden bg-white shadow-lg">
+                    <div class="border rounded-lg overflow-hidden bg-white shadow-lg hover:shadow-xl transform transition-all duration-300">
                         <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover" loading="lazy">
                         <div class="p-4">
                             <h3 class="text-lg font-semibold" x-text="product.name"></h3>
-                            <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition-colors">
+                            <button @click="cart.addToCart(product)" class="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition-colors btn-hover">
                                 Ajouter au panier
                             </button>
                         </div>
@@ -196,4 +222,5 @@
         });
     </script>
 </body>
-</html>
+    </html>
+    
