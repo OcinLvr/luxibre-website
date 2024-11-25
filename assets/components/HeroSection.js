@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Star, Shield, Truck } from 'lucide-react';
 
-const HeroSection = () => {
+export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     {
