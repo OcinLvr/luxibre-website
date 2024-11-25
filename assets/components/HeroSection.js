@@ -1,5 +1,5 @@
 // HeroSection.js
-function HeroSection() {
+export default function HeroSection() {
   const slides = [
     {
       image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d",
