@@ -32,7 +32,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div className="relative h-screen">
+    <div className="relative h-screen"></div>
       {/* Slides */}
       {slides.map((slide, index) => (
         <div
