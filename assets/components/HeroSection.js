@@ -94,5 +94,3 @@ export default function HeroSection() {
     </div>
   );
 };
-
-export default HeroSection;
