@@ -1,3 +1,29 @@
+/* Ajoutez ces styles pour les animations */
+.transition-opacity {
+    transition-property: opacity;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.duration-1000 {
+    transition-duration: 1000ms;
+}
+
+/* Styles pour le responsive */
+@media (max-width: 768px) {
+    .text-6xl {
+        font-size: 2.5rem;
+    }
+    .text-2xl {
+        font-size: 1.25rem;
+    }
+}
+
+
+
+
+
+
+
 /* Base styles */
 body {
     font-family: 'Montserrat', sans-serif;
