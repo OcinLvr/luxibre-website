@@ -129,120 +129,171 @@
     </footer>
 
     <!-- Hero Section Script -->
-    import React from 'react';
-import { Clock, Truck, Star } from 'lucide-react';
+    <script type="module">
+        import { Clock, Truck, Star } from 'https://cdn.jsdelivr.net/npm/lucide-react@0.263.1/+esm';
 
-const HeroSection = () => {
-    const [currentSlide, setCurrentSlide] = React.useState(0);
-    
-    const slides = [
-        {
-            image: "/api/placeholder/1920/800",
-            title: "Collection Exclusive",
-            subtitle: "Des produits uniques sélectionnés pour vous"
-        },
-        {
-            image: "/api/placeholder/1920/800",
-            title: "Qualité Premium",
-            subtitle: "Le luxe accessible à tous"
-        },
-        {
-            image: "/api/placeholder/1920/800",
-            title: "Livraison Express",
-            subtitle: "Recevez vos produits en 7-14 jours"
-        }
-    ];
+        const HeroSection = () => {
+            const [currentSlide, setCurrentSlide] = React.useState(0);
+            
+            const slides = [
+                {
+                    image: "/api/placeholder/1920/800",
+                    title: "Collection Exclusive",
+                    subtitle: "Des produits uniques sélectionnés pour vous"
+                },
+                {
+                    image: "/api/placeholder/1920/800",
+                    title: "Qualité Premium",
+                    subtitle: "Le luxe accessible à tous"
+                },
+                {
+                    image: "/api/placeholder/1920/800",
+                    title: "Livraison Express",
+                    subtitle: "Recevez vos produits en 7-14 jours"
+                }
+            ];
 
-    const guarantees = [
-        {
-            icon: Clock,
-            title: "Garantie 30 Jours",
-            description: "Satisfait ou remboursé"
-        },
-        {
-            icon: Truck,
-            title: "Livraison Express",
-            description: "7-14 jours ouvrés"
-        },
-        {
-            icon: Star,
-            title: "Service Premium",
-            description: "Support client 24/7"
-        }
-    ];
+            const guarantees = [
+                {
+                    icon: Clock,
+                    title: "Garantie 30 Jours",
+                    description: "Satisfait ou remboursé"
+                },
+                {
+                    icon: Truck,
+                    title: "Livraison Express",
+                    description: "7-14 jours ouvrés"
+                },
+                {
+                    icon: Star,
+                    title: "Service Premium",
+                    description: "Support client 24/7"
+                }
+            ];
 
-    React.useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 5000);
-        return () => clearInterval(timer);
-    }, []);
+            React.useEffect(() => {
+                const timer = setInterval(() => {
+                    setCurrentSlide((prev) => (prev + 1) % slides.length);
+                }, 5000);
+                return () => clearInterval(timer);
+            }, []);
 
-    return (
-        <>
-            <div className="relative h-[70vh]">
-                {slides.map((slide, index) => (
-                    <div
-                        key={index}
-                        className={`absolute inset-0 transition-opacity duration-1000 ${
-                            currentSlide === index ? 'opacity-100' : 'opacity-0'
-                        }`}
-                    >
-                        <img
-                            src={slide.image}
-                            alt={slide.title}
-                            className="object-cover w-full h-full"
-                        />
-                        <div className="absolute inset-0 bg-black bg-opacity-40" />
-                    </div>
-                ))}
-                
-                <div className="relative z-10 h-full flex flex-col items-center justify-center text-white px-4">
-                    <h1 className="text-5xl font-bold mb-4 text-center">
-                        {slides[currentSlide].title}
-                    </h1>
-                    <p className="text-xl mb-6 text-center max-w-2xl">
-                        {slides[currentSlide].subtitle}
-                    </p>
-                    <button className="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-                        Découvrir la Collection
-                    </button>
-                </div>
+            return React.createElement(
+                React.Fragment,
+                null,
+                React.createElement(
+                    'div',
+                    {
+                        className: 'relative h-[70vh]'
+                    },
+                    slides.map((slide, index) => (
+                        React.createElement(
+                            'div',
+                            {
+                                key: index,
+                                className: `absolute inset-0 transition-opacity duration-1000 ${
+                                    currentSlide === index ? 'opacity-100' : 'opacity-0'
+                                }`
+                            },
+                            [
+                                React.createElement('img', {
+                                    src: slide.image,
+                                    alt: slide.title,
+                                    className: 'object-cover w-full h-full'
+                                }),
+                                React.createElement('div', {
+                                    className: 'absolute inset-0 bg-black bg-opacity-40'
+                                })
+                            ]
+                        )
+                    )),
+                    React.createElement(
+                        'div',
+                        {
+                            className: 'relative z-10 h-full flex flex-col items-center justify-center text-white px-4'
+                        },
+                        [
+                            React.createElement('h1', {
+                                className: 'text-5xl font-bold mb-4 text-center',
+                                children: slides[currentSlide].title
+                            }),
+                            React.createElement('p', {
+                                className: 'text-xl mb-6 text-center max-w-2xl',
+                                children: slides[currentSlide].subtitle
+                            }),
+                            React.createElement('button', {
+                                className: 'bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors',
+                                children: 'Découvrir la Collection'
+                            })
+                        ]
+                    ),
+                    React.createElement(
+                        'div',
+                        {
+                            className: 'absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2'
+                        },
+                        slides.map((_, index) => (
+                            React.createElement('button', {
+                                key: index,
+                                className: `w-3 h-3 rounded-full transition-all ${
+                                    currentSlide === index ? 'bg-white w-8' : 'bg-white/50'
+                                }`,
+                                onClick: () => setCurrentSlide(index)
+                            })
+                        ))
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    {
+                        className: 'bg-white py-8 shadow-md'
+                    },
+                    React.createElement(
+                        'div',
+                        {
+                            className: 'container mx-auto px-4'
+                        },
+                        React.createElement(
+                            'div',
+                            {
+                                className: 'grid grid-cols-1 md:grid-cols-3 gap-8'
+                            },
+                            guarantees.map((guarantee, index) => (
+                                React.createElement(
+                                    'div',
+                                    {
+                                        key: index,
+                                        className: 'flex items-center justify-center space-x-4'
+                                    },
+                                    [
+                                        React.createElement(guarantee.icon, {
+                                            className: 'w-8 h-8 text-gray-800'
+                                        }),
+                                        React.createElement(
+                                            'div',
+                                            null,
+                                            [
+                                                React.createElement('h3', {
+                                                    className: 'font-semibold text-lg',
+                                                    children: guarantee.title
+                                                }),
+                                                React.createElement('p', {
+                                                    className: 'text-gray-600',
+                                                    children: guarantee.description
+                                                })
+                                            ]
+                                        )
+                                    ]
+                                )
+                            ))
+                        )
+                    )
+                )
+            );
+        };
 
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-                    {slides.map((_, index) => (
-                        <button
-                            key={index}
-                            className={`w-3 h-3 rounded-full transition-all ${
-                                currentSlide === index ? 'bg-white w-8' : 'bg-white/50'
-                            }`}
-                            onClick={() => setCurrentSlide(index)}
-                        />
-                    ))}
-                </div>
-            </div>
-
-            <div className="bg-white py-8 shadow-md">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {guarantees.map((guarantee, index) => (
-                            <div key={index} className="flex items-center justify-center space-x-4">
-                                <guarantee.icon className="w-8 h-8 text-gray-800" />
-                                <div>
-                                    <h3 className="font-semibold text-lg">{guarantee.title}</h3>
-                                    <p className="text-gray-600">{guarantee.description}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </>
-    );
-};
-
-export default HeroSection;
-                
+        const root = ReactDOM.createRoot(document.getElementById('hero-root'));
+        root.render(React.createElement(HeroSection));
     </script>
 </body>
 </html>
